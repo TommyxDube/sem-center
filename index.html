@@ -1,0 +1,1407 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEM Command Center — Cossette Media</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+:root{
+  --bg:#0a0a0a;--surf:#111;--surf2:#1a1a1a;--surf3:#222;
+  --bord:#2a2a2a;--bord2:#333;--text:#f0f0f0;--muted:#666;--muted2:#888;
+  --accent:#e8ff47;--accent2:#b8cc2a;
+  --blue:#4da6ff;--green:#47ff8a;--red:#ff4747;--orange:#ff8c47;--purple:#a47fff;
+  --mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;--disp:'Syne',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:13px;min-height:100vh;}
+
+.site-header{background:var(--surf);border-bottom:1px solid var(--bord);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:52px;position:sticky;top:0;z-index:100;}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-mark{width:26px;height:26px;background:var(--accent);border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-size:13px;font-weight:800;color:var(--bg);}
+.logo-text{font-family:var(--disp);font-size:13px;font-weight:700;}
+.logo-sub{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;}
+.hdr-meta{font-family:var(--mono);font-size:9px;color:var(--muted);}
+.dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);margin-right:5px;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+.main-nav{background:var(--surf);border-bottom:1px solid var(--bord);padding:0 24px;display:flex;gap:2px;overflow-x:auto;}
+.nav-tab{display:flex;align-items:center;gap:6px;padding:0 14px;height:42px;background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:color .15s,border-color .15s;}
+.nav-tab:hover{color:var(--text);}
+.nav-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+
+.app-shell{display:flex;height:calc(100vh - 94px);}
+.sidebar{width:240px;min-width:240px;background:var(--surf);border-right:1px solid var(--bord);overflow-y:auto;padding:16px 0;}
+.main-content{flex:1;overflow-y:auto;padding:20px 24px;}
+
+.sb-label{font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);padding:0 16px 6px;display:block;}
+.sb-item{display:flex;align-items:center;gap:9px;padding:7px 16px;cursor:pointer;transition:background .12s;border-left:2px solid transparent;color:var(--muted2);font-size:12px;}
+.sb-item:hover{background:var(--surf2);color:var(--text);}
+.sb-item.active{background:var(--surf2);border-left-color:var(--accent);color:var(--accent);}
+.sb-badge{margin-left:auto;background:var(--surf3);border:1px solid var(--bord2);border-radius:3px;font-family:var(--mono);font-size:9px;color:var(--muted);padding:1px 5px;}
+.sb-div{height:1px;background:var(--bord);margin:8px 16px;}
+
+.panel{display:none;}.panel.active{display:block;animation:fi .18s ease;}
+@keyframes fi{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
+
+.sec-title{font-family:var(--disp);font-size:19px;font-weight:800;margin-bottom:3px;}
+.sec-sub{font-size:11px;color:var(--muted2);margin-bottom:16px;}
+
+.card{background:var(--surf);border:1px solid var(--bord);border-radius:6px;overflow:hidden;margin-bottom:10px;}
+.card-hdr{padding:10px 14px;border-bottom:1px solid var(--bord);display:flex;align-items:center;justify-content:space-between;background:var(--surf2);}
+.card-title{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted2);display:flex;align-items:center;gap:7px;}
+.card-body{padding:14px;}
+
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:9px;margin-bottom:10px;}
+.fg label{display:block;font-family:var(--mono);font-size:9px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
+.fc{width:100%;background:var(--surf2);border:1px solid var(--bord2);border-radius:4px;color:var(--text);font-family:var(--mono);font-size:11px;padding:6px 9px;outline:none;transition:border-color .15s;}
+.fc:focus{border-color:var(--accent);}
+select.fc option{background:var(--surf2);}
+textarea.fc{resize:vertical;min-height:75px;line-height:1.6;}
+
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border:none;border-radius:4px;font-family:var(--sans);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.btn-p{background:var(--accent);color:var(--bg);}.btn-p:hover{background:var(--accent2);}
+.btn-s{background:var(--surf2);color:var(--text);border:1px solid var(--bord2);}.btn-s:hover{background:var(--surf3);}
+.btn-sm{padding:4px 10px;font-size:11px;}
+.btn-row{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-top:10px;}
+
+.tag{display:inline-block;padding:2px 7px;border-radius:3px;font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;}
+.t-fr{background:rgba(77,166,255,.15);color:var(--blue);border:1px solid rgba(77,166,255,.3);}
+.t-en{background:rgba(71,255,138,.15);color:var(--green);border:1px solid rgba(71,255,138,.3);}
+.t-s{background:rgba(164,127,255,.15);color:var(--purple);border:1px solid rgba(164,127,255,.3);}
+.t-sh{background:rgba(255,140,71,.15);color:var(--orange);border:1px solid rgba(255,140,71,.3);}
+.t-pm{background:rgba(232,255,71,.15);color:var(--accent);border:1px solid rgba(232,255,71,.3);}
+.t-di{background:rgba(255,71,71,.15);color:var(--red);border:1px solid rgba(255,71,71,.3);}
+.t-gy{background:var(--surf3);color:var(--muted2);border:1px solid var(--bord2);}
+
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:14px;}
+.kpi-c{background:var(--surf);border:1px solid var(--bord);border-radius:6px;padding:12px;text-align:center;}
+.kpi-l{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px;}
+.kpi-v{font-family:var(--disp);font-size:20px;font-weight:800;}
+.kv-a{color:var(--accent);}.kv-g{color:var(--green);}.kv-r{color:var(--red);}
+.kpi-sub{font-size:10px;color:var(--muted);margin-top:2px;}
+
+.dt{width:100%;border-collapse:collapse;font-size:11px;}
+.dt th{background:var(--surf2);font-family:var(--mono);font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding:7px 9px;text-align:left;border-bottom:1px solid var(--bord);white-space:nowrap;}
+.dt td{padding:7px 9px;border-bottom:1px solid var(--bord);vertical-align:middle;line-height:1.4;}
+.dt tr:last-child td{border-bottom:none;}
+.dt tr:hover td{background:var(--surf2);}
+.mc{font-family:var(--mono);font-size:10px;color:var(--muted2);}
+.rw-a{} .rw-w td{background:rgba(255,140,71,.04);} .rw-d td{background:rgba(255,71,71,.05);}
+
+.code-blk{background:#050505;border:1px solid var(--bord);border-radius:5px;padding:14px;font-family:var(--mono);font-size:10.5px;line-height:1.75;overflow:auto;white-space:pre;color:#ccc;max-height:420px;}
+
+.alert{padding:9px 13px;border-radius:5px;font-size:12px;line-height:1.5;display:flex;gap:7px;align-items:flex-start;margin-bottom:8px;}
+.al-w{background:rgba(255,140,71,.1);border:1px solid rgba(255,140,71,.3);color:var(--orange);}
+.al-d{background:rgba(255,71,71,.1);border:1px solid rgba(255,71,71,.3);color:var(--red);}
+.al-s{background:rgba(71,255,138,.08);border:1px solid rgba(71,255,138,.25);color:var(--green);}
+.al-i{background:rgba(77,166,255,.08);border:1px solid rgba(77,166,255,.25);color:var(--blue);}
+
+.steps{display:flex;margin-bottom:16px;}
+.step{flex:1;padding:9px 12px;background:var(--surf2);border:1px solid var(--bord);border-right:none;display:flex;flex-direction:column;gap:2px;cursor:pointer;}
+.step:first-child{border-radius:4px 0 0 4px;}.step:last-child{border-radius:0 4px 4px 0;border-right:1px solid var(--bord);}
+.step-n{font-family:var(--mono);font-size:9px;color:var(--muted);}
+.step-l{font-size:11px;font-weight:600;}
+.step.active{background:rgba(232,255,71,.08);border-color:rgba(232,255,71,.3);}
+.step.active .step-n,.step.active .step-l{color:var(--accent);}
+.step.done .step-l{color:var(--green);}
+
+.itabs{display:flex;gap:3px;margin-bottom:12px;border-bottom:1px solid var(--bord);}
+.itab{padding:6px 13px;background:none;border:none;color:var(--muted);font-family:var(--mono);font-size:10px;letter-spacing:.05em;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s;}
+.itab:hover{color:var(--text);}.itab.active{color:var(--accent);border-bottom-color:var(--accent);}
+
+.out-area{background:#050505;border:1px solid var(--bord);border-radius:5px;padding:12px;font-family:var(--mono);font-size:10px;line-height:1.7;min-height:100px;color:var(--muted2);white-space:pre-wrap;word-break:break-all;max-height:480px;overflow-y:auto;}
+
+@media(max-width:700px){.app-shell{flex-direction:column;}.sidebar{width:100%;height:auto;border-right:none;border-bottom:1px solid var(--bord);}.form-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="logo">
+    <div class="logo-mark">S</div>
+    <div>
+      <div class="logo-text">SEM Command Center</div>
+      <div class="logo-sub">Cossette Media · Tommy Dubé</div>
+    </div>
+  </div>
+  <div class="hdr-meta"><span class="dot"></span>Opérationnel · UTC-4 · CAD</div>
+</header>
+
+<nav class="main-nav" id="main-nav">
+  <button class="nav-tab active" data-tab="csv">📄 Générateur CSV Editor</button>
+  <button class="nav-tab" data-tab="scripts">⚙️ Scripts Google Ads</button>
+  <button class="nav-tab" data-tab="dashboard">📊 Dashboard Monitoring</button>
+  <button class="nav-tab" data-tab="rules">🤖 Règles automatisées</button>
+  <button class="nav-tab" data-tab="vertex">🚀 Architecture Vertex</button>
+</nav>
+
+<div class="app-shell">
+<aside class="sidebar">
+  <span class="sb-label">Comptes</span>
+  <div class="sb-item active" data-client="saq"><span>🍷</span><span>SAQ</span><span class="sb-badge">E-com</span></div>
+  <div class="sb-item" data-client="tv"><span>📺</span><span>Télé-Québec</span><span class="sb-badge">Média</span></div>
+  <div class="sb-item" data-client="generic"><span>🏢</span><span>Template générique</span><span class="sb-badge">TPL</span></div>
+  <div class="sb-div"></div>
+  <span class="sb-label">État du compte</span>
+  <div class="sb-item"><span>🟢</span><span>Campagnes actives</span><span class="sb-badge" id="sb-active">—</span></div>
+  <div class="sb-item"><span>🔴</span><span>Alertes</span><span class="sb-badge" id="sb-alerts" style="color:var(--red)">0</span></div>
+  <div class="sb-item"><span>💰</span><span>Budget/jour</span><span class="sb-badge" id="sb-budget">—</span></div>
+</aside>
+
+<main class="main-content">
+
+<!-- ══ PANEL CSV ══════════════════════════════ -->
+<div class="panel active" id="panel-csv">
+  <div class="sec-title">Générateur CSV — Google Ads Editor</div>
+  <div class="sec-sub" id="csv-sub">SAQ · Structure opérationnelle · Prêt à importer</div>
+
+  <div class="steps">
+    <div class="step active" data-step="1"><span class="step-n">01</span><span class="step-l">Paramètres</span></div>
+    <div class="step" data-step="2"><span class="step-n">02</span><span class="step-l">Campagnes</span></div>
+    <div class="step" data-step="3"><span class="step-n">03</span><span class="step-l">Mots-clés</span></div>
+    <div class="step" data-step="4"><span class="step-n">04</span><span class="step-l">Annonces RSA</span></div>
+    <div class="step" data-step="5"><span class="step-n">05</span><span class="step-l">Export CSV</span></div>
+  </div>
+
+  <!-- Step 1 -->
+  <div id="s1" class="csv-step">
+    <div class="card">
+      <div class="card-hdr"><div class="card-title">⚙️ Paramètres du compte</div></div>
+      <div class="card-body">
+        <div class="form-grid">
+          <div class="fg"><label>Compte cible</label>
+            <select class="fc" id="p-account">
+              <option value="saq">SAQ — E-commerce</option>
+              <option value="tv">Télé-Québec — Média</option>
+              <option value="generic">Template générique</option>
+            </select>
+          </div>
+          <div class="fg"><label>URL de base</label><input type="text" class="fc" id="p-url" value="https://www.saq.com"></div>
+          <div class="fg"><label>KPI principal</label>
+            <select class="fc" id="p-kpi">
+              <option value="roas">ROAS — E-commerce</option>
+              <option value="cpa">CPA — Acquisition</option>
+              <option value="cpl">CPL — Leads B2B</option>
+              <option value="cpm">CPM — Notoriété</option>
+            </select>
+          </div>
+          <div class="fg"><label>Budget total/jour ($CAD)</label><input type="number" class="fc" id="p-budget" value="1500"></div>
+          <div class="fg"><label>Cible ROAS (%)</label><input type="number" class="fc" id="p-roas-val" value="400"></div>
+          <div class="fg"><label>Cible CPA ($)</label><input type="number" class="fc" id="p-cpa-val" value="45"></div>
+          <div class="fg"><label>Marque FR</label><input type="text" class="fc" id="p-brand-fr" value="SAQ"></div>
+          <div class="fg"><label>Marque EN</label><input type="text" class="fc" id="p-brand-en" value="SAQ"></div>
+        </div>
+        <div class="btn-row"><button class="btn btn-p" onclick="goStep(2)">Configurer les campagnes →</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2 -->
+  <div id="s2" class="csv-step" style="display:none">
+    <div class="card">
+      <div class="card-hdr"><div class="card-title">📋 Structure des campagnes</div></div>
+      <div class="card-body" style="padding:0;overflow-x:auto">
+        <table class="dt"><thead><tr>
+          <th>Campagne</th><th>Type</th><th>Lang.</th><th>Budget/j</th><th>Stratégie</th><th>Cible</th><th>Note</th>
+        </tr></thead><tbody id="camp-tbody"></tbody></table>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-s" onclick="goStep(1)">← Retour</button>
+      <button class="btn btn-p" onclick="goStep(3)">Configurer les mots-clés →</button>
+    </div>
+  </div>
+
+  <!-- Step 3 -->
+  <div id="s3" class="csv-step" style="display:none">
+    <div class="card">
+      <div class="card-hdr"><div class="card-title">🔑 Mots-clés par groupe d'annonces</div></div>
+      <div class="card-body">
+        <div class="alert al-i">ℹ️ Mots-clés pré-générés selon le compte sélectionné. Modifier directement avant export.</div>
+        <div id="kw-editor"></div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-s" onclick="goStep(2)">← Retour</button>
+      <button class="btn btn-p" onclick="goStep(4)">Configurer les annonces →</button>
+    </div>
+  </div>
+
+  <!-- Step 4 -->
+  <div id="s4" class="csv-step" style="display:none">
+    <div class="card">
+      <div class="card-hdr"><div class="card-title">📝 Annonces RSA</div></div>
+      <div class="card-body">
+        <div class="alert al-w">⚠️ Headlines ≤ 30 car. · Descriptions ≤ 90 car. · Compteur en temps réel</div>
+        <div id="rsa-editor"></div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-s" onclick="goStep(3)">← Retour</button>
+      <button class="btn btn-p" onclick="goStep(5)">Générer le CSV →</button>
+    </div>
+  </div>
+
+  <!-- Step 5 -->
+  <div id="s5" class="csv-step" style="display:none">
+    <div class="kpi-grid" id="csv-kpis"></div>
+    <div class="card">
+      <div class="card-hdr">
+        <div class="card-title">📄 CSV prêt — Copier ou télécharger</div>
+        <div style="display:flex;gap:5px">
+          <button class="btn btn-sm btn-s" id="btn-copy-csv">📋 Copier</button>
+          <button class="btn btn-sm btn-p" id="btn-dl-csv">⬇ Télécharger .csv</button>
+        </div>
+      </div>
+      <div class="card-body" style="padding:0"><div class="out-area" id="csv-out"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-hdr"><div class="card-title">📋 Guide d'import — Google Ads Editor</div></div>
+      <div class="card-body">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px">
+          <div style="background:var(--surf2);border:1px solid var(--bord);border-radius:4px;padding:10px"><div style="font-family:var(--mono);font-size:9px;color:var(--accent);margin-bottom:3px">ÉTAPE 1</div><div style="font-size:11px;font-weight:600;margin-bottom:2px">Ouvrir Editor</div><div style="font-size:10px;color:var(--muted2)">Google Ads Editor → sélectionner le compte</div></div>
+          <div style="background:var(--surf2);border:1px solid var(--bord);border-radius:4px;padding:10px"><div style="font-family:var(--mono);font-size:9px;color:var(--accent);margin-bottom:3px">ÉTAPE 2</div><div style="font-size:11px;font-weight:600;margin-bottom:2px">Télécharger</div><div style="font-size:10px;color:var(--muted2)">Account → Download latest changes</div></div>
+          <div style="background:var(--surf2);border:1px solid var(--bord);border-radius:4px;padding:10px"><div style="font-family:var(--mono);font-size:9px;color:var(--accent);margin-bottom:3px">ÉTAPE 3</div><div style="font-size:11px;font-weight:600;margin-bottom:2px">Importer</div><div style="font-size:10px;color:var(--muted2)">File → Import → From file → .csv</div></div>
+          <div style="background:var(--surf2);border:1px solid var(--bord);border-radius:4px;padding:10px"><div style="font-family:var(--mono);font-size:9px;color:var(--accent);margin-bottom:3px">ÉTAPE 4</div><div style="font-size:11px;font-weight:600;margin-bottom:2px">Valider</div><div style="font-size:10px;color:var(--muted2)">Process → Check changes → Corriger erreurs</div></div>
+          <div style="background:var(--surf2);border:1px solid var(--bord);border-radius:4px;padding:10px"><div style="font-family:var(--mono);font-size:9px;color:var(--accent);margin-bottom:3px">ÉTAPE 5</div><div style="font-size:11px;font-weight:600;margin-bottom:2px">Publier</div><div style="font-size:10px;color:var(--muted2)">Keep changes → Post to Google Ads</div></div>
+        </div>
+        <div class="alert al-w" style="margin-top:10px">⚠️ Toutes les campagnes sont générées en statut <strong>PAUSED</strong>. Activer manuellement après vérification.</div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-s" onclick="goStep(4)">← Retour</button>
+      <button class="btn btn-p" onclick="goStep(1)">🔄 Recommencer</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PANEL SCRIPTS ══════════════════════════ -->
+<div class="panel" id="panel-scripts">
+  <div class="sec-title">Scripts Google Ads</div>
+  <div class="sec-sub">5 scripts production-ready · Copier dans Tools → Bulk Actions → Scripts</div>
+  <div class="itabs" id="script-tabs">
+    <button class="itab active" data-script="budget">💰 Budget Monitor</button>
+    <button class="itab" data-script="anomaly">🔔 Anomaly Detector</button>
+    <button class="itab" data-script="searchterms">🔍 Search Terms</button>
+    <button class="itab" data-script="quality">⭐ Quality Score</button>
+    <button class="itab" data-script="pmax">⚡ PMax Monitor</button>
+  </div>
+  <div id="scripts-content"></div>
+</div>
+
+<!-- ══ PANEL DASHBOARD ════════════════════════ -->
+<div class="panel" id="panel-dashboard">
+  <div class="sec-title">Dashboard Monitoring</div>
+  <div class="sec-sub">Simulation temps réel · Connecter à l'API Google Ads pour données live</div>
+  <div class="kpi-grid">
+    <div class="kpi-c"><div class="kpi-l">Dépense mois</div><div class="kpi-v kv-a" id="d-spend">—</div><div class="kpi-sub">vs budget</div></div>
+    <div class="kpi-c"><div class="kpi-l">CPA moyen</div><div class="kpi-v kv-g" id="d-cpa">—</div><div class="kpi-sub">cible $45</div></div>
+    <div class="kpi-c"><div class="kpi-l">ROAS compte</div><div class="kpi-v kv-g" id="d-roas">—</div><div class="kpi-sub">cible 400%</div></div>
+    <div class="kpi-c"><div class="kpi-l">IS Brand</div><div class="kpi-v kv-r" id="d-is">—</div><div class="kpi-sub">cible ≥ 90%</div></div>
+    <div class="kpi-c"><div class="kpi-l">Alertes actives</div><div class="kpi-v kv-r" id="d-alerts">0</div><div class="kpi-sub">action requise</div></div>
+    <div class="kpi-c"><div class="kpi-l">En apprentissage</div><div class="kpi-v kv-a" id="d-learn">—</div><div class="kpi-sub">PMax + SB</div></div>
+  </div>
+  <div class="card">
+    <div class="card-hdr">
+      <div class="card-title">🚨 Centre d'alertes</div>
+      <div style="display:flex;gap:5px">
+        <button class="btn btn-sm btn-s" id="btn-sim">🔄 Simuler alertes</button>
+        <button class="btn btn-sm btn-s" id="btn-clear">✓ Acquitter tout</button>
+      </div>
+    </div>
+    <div style="overflow-x:auto"><table class="dt"><thead><tr><th>Sév.</th><th>Campagne</th><th>Métrique</th><th>Valeur</th><th>Seuil</th><th>Action</th><th>Il y a</th></tr></thead><tbody id="alerts-tbody"><tr><td colspan="7" style="text-align:center;padding:18px;color:var(--muted)">Cliquer "Simuler alertes"</td></tr></tbody></table></div>
+  </div>
+  <div class="card">
+    <div class="card-hdr"><div class="card-title">📈 Performance hebdomadaire</div></div>
+    <div style="overflow-x:auto"><table class="dt"><thead><tr><th>Campagne</th><th>Type</th><th>Dépense 7j</th><th>Conv.</th><th>CPA</th><th>ROAS</th><th>IS</th><th>Statut</th></tr></thead><tbody id="perf-tbody"><tr><td colspan="8" style="text-align:center;padding:18px;color:var(--muted)">Simuler les alertes pour voir les données</td></tr></tbody></table></div>
+  </div>
+</div>
+
+<!-- ══ PANEL RULES ════════════════════════════ -->
+<div class="panel" id="panel-rules">
+  <div class="sec-title">Règles automatisées Google Ads</div>
+  <div class="sec-sub">Règles natives · Tools → Automated Rules · Aucun code requis</div>
+  <div class="alert al-i">ℹ️ Créer ces règles directement dans Google Ads. Copier les conditions et actions ci-dessous.</div>
+  <div id="rules-list"></div>
+</div>
+
+<!-- ══ PANEL VERTEX ═══════════════════════════ -->
+<div class="panel" id="panel-vertex">
+  <div class="sec-title">Architecture Vertex AI — Phase 2</div>
+  <div class="sec-sub">Plan Google Cloud · API Google Ads + Vertex AI + BigQuery</div>
+  <div id="vertex-phases"></div>
+  <div class="card">
+    <div class="card-hdr">
+      <div class="card-title">🐍 Code Python — Export API Google Ads → BigQuery</div>
+      <button class="btn btn-sm btn-s" id="btn-copy-vertex">📋 Copier</button>
+    </div>
+    <div class="card-body" style="padding:0"><div class="code-blk" id="vertex-code"></div></div>
+  </div>
+</div>
+
+</main>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════════
+const CLIENTS = {
+  saq:{name:'SAQ',url:'https://www.saq.com',kpi:'roas',budget:1500,roas:400,cpa:45,brandFR:'SAQ',brandEN:'SAQ',active:12,budgetLabel:'$1 500/j',
+    campaigns:[
+      {name:'sem-brand | generique | FR | QC | SEM | CVN | always-on-2025-2026',type:'Search',lang:'FR',budget:100,strategy:'Target Impression Share',target:'95% Top Abs.',fix:'Était en Max Clics → corrigé'},
+      {name:'sem-brand | generique | EN | QC | SEM | CVN | always-on-2025-2026',type:'Search',lang:'EN',budget:100,strategy:'Target Impression Share',target:'95% Top Abs.',fix:'Était en Max Clics → corrigé'},
+      {name:'sem-non-brand-vins | vins | FR | QC | SEM | CVN | always-on-2025-2026',type:'Search',lang:'FR',budget:400,strategy:'Maximize Conversion Value',target:'tROAS 400%',fix:'Budget augmenté — était Limited by budget'},
+      {name:'sem-non-brand-vins | vins | EN | QC | SEM | CVN | always-on-2025-2026',type:'Search',lang:'EN',budget:400,strategy:'Maximize Conversion Value',target:'tROAS 400%',fix:'Budget augmenté'},
+      {name:'sem-non-brand-spiritueux | spiritueux | FR | QC | SEM | CVN | always-on-2025-2026',type:'Search',lang:'FR',budget:300,strategy:'Maximize Conversion Value',target:'tROAS 400%',fix:'Budget augmenté'},
+      {name:'sem-non-brand-spiritueux | spiritueux | EN | QC | SEM | CVN | always-on-2025-2026',type:'Search',lang:'EN',budget:300,strategy:'Maximize Conversion Value',target:'tROAS 400%',fix:'Budget augmenté'},
+      {name:'shopping-fea | faible-en-alcool | FR-EN | QC | Shopping | CVN | always-on-2025-2026',type:'Shopping',lang:'FR+EN',budget:250,strategy:'Target ROAS',target:'tROAS 3600%',fix:'Conv. Rate 33% → tROAS activé'},
+      {name:'pmax-generique | campagne-estivale | FR | QC | P-MAX | CNS | campagne-estivale-2026-2027',type:'Performance Max',lang:'FR',budget:743,strategy:'Maximize Conversion Value',target:'tROAS 400%',fix:'Asset groups à améliorer — OptScore 58%'},
+      {name:'pmax-generique | campagne-estivale | EN | QC | P-MAX | CNS | campagne-estivale-2026-2027',type:'Performance Max',lang:'EN',budget:127,strategy:'Maximize Conversion Value',target:'tROAS 400%',fix:'Asset groups distincts requis'},
+      {name:'pmax-generique | nouvel-arrivage | FR | QC | P-MAX | CNS | always-on-2026-2027',type:'Performance Max',lang:'FR',budget:80,strategy:'Maximize Conversion Value',target:'tROAS 400%',fix:'En apprentissage — ne pas modifier 14j'},
+      {name:'pmax-generique | nouvel-arrivage | EN | QC | P-MAX | CNS | always-on-2026-2027',type:'Performance Max',lang:'EN',budget:70,strategy:'Maximize Conversion Value',target:'tROAS 400%',fix:'En apprentissage'},
+      {name:'sem-non-brand-cocktails | cocktails | FR | QC | SEM | CVN | always-on-2025-2026',type:'Search',lang:'FR',budget:300,strategy:'Maximize Conversion Value',target:'tROAS 400%',fix:'Budget augmenté'},
+    ]
+  },
+  tv:{name:'Télé-Québec',url:'https://www.telequebec.tv',kpi:'cpm',budget:6869,roas:0,cpa:5,brandFR:'Télé-Québec',brandEN:'Tele-Quebec',active:16,budgetLabel:'$6 869/j',
+    campaigns:[
+      {name:'Tele-Qc - Brand - I-1CA-MS-001 - FR',type:'Search',lang:'FR',budget:37.5,strategy:'Target Impression Share',target:'95% Top Abs.',fix:'Était en Max Clics → corrigé'},
+      {name:'Tele-QC - Générique Jeunesse - I-1CA-MS-001',type:'Search',lang:'FR',budget:31.25,strategy:'Maximize Conversions',target:'Corriger tracking 235%',fix:'CRITIQUE: Conv. rate 235% = tag brisé'},
+      {name:'OTT - Mode Visionnement - I-1CA-MS-001 - FR',type:'Search',lang:'FR',budget:62.5,strategy:'Maximize Conversions (Target CPA)',target:'tCPA $5',fix:'OptScore 37% → revoir groupes'},
+      {name:'Top cornichon - Vues de vidéos',type:'Video',lang:'FR',budget:1500,strategy:'Target CPV',target:'VTR > 35%',fix:'Mesurer visite site post-vue'},
+      {name:'La mascotte du chaos - YouTube Series',type:'Video',lang:'FR',budget:2500,strategy:'Target CPV',target:'VTR > 35%',fix:'$2 500/j — valider attribution'},
+      {name:'Demand-Gen campagne fêtes 2025',type:'Demand Gen',lang:'FR',budget:145,strategy:'Target CPC',target:'CPA < $5',fix:'Excellents résultats → augmenter budget'},
+    ]
+  },
+  generic:{name:'Client générique',url:'https://www.client.com',kpi:'cpa',budget:500,roas:0,cpa:60,brandFR:'[Marque FR]',brandEN:'[Brand EN]',active:7,budgetLabel:'$500/j',
+    campaigns:[
+      {name:'Brand | Search | FR | [Marque] | always-on',type:'Search',lang:'FR',budget:37.5,strategy:'Target Impression Share',target:'95% Top Abs.',fix:''},
+      {name:'Brand | Search | EN | [Brand] | always-on',type:'Search',lang:'EN',budget:37.5,strategy:'Target Impression Share',target:'95% Top Abs.',fix:''},
+      {name:'Non-Brand | Search | FR | Génériques | always-on',type:'Search',lang:'FR',budget:112.5,strategy:'Maximize Conversion Value',target:'tROAS selon données',fix:''},
+      {name:'Non-Brand | Search | EN | Generic | always-on',type:'Search',lang:'EN',budget:112.5,strategy:'Maximize Conversion Value',target:'tROAS selon données',fix:''},
+      {name:'Performance Max | FR+EN | always-on',type:'Performance Max',lang:'FR+EN',budget:150,strategy:'Maximize Conversion Value',target:'tROAS 400%',fix:''},
+      {name:'RLSA | Search | FR | Remarketing | always-on',type:'Search',lang:'FR',budget:25,strategy:'Maximize Conversions',target:'tCPA -30% vs non-brand',fix:''},
+      {name:'RLSA | Search | EN | Remarketing | always-on',type:'Search',lang:'EN',budget:25,strategy:'Maximize Conversions',target:'tCPA -30% vs non-brand',fix:''},
+    ]
+  }
+};
+
+const KW={
+  saq:{
+    'Brand FR':{kws:'[SAQ]\n[SAQ.com]\n[Société des alcools]\n"SAQ livraison"\n"SAQ boutique en ligne"',match:'Exact / Expression'},
+    'Brand EN':{kws:'[SAQ]\n[SAQ.com]\n[Quebec liquor]\n"SAQ delivery"\n"SAQ online store"',match:'Exact / Expression'},
+    'Vins FR':{kws:'"acheter vin rouge québec"\n"vin blanc livraison"\n[commander vin en ligne]\n"meilleur vin moins de 20$"\n"vin importation privée"',match:'Expression / Exact'},
+    'Vins EN':{kws:'"buy red wine Quebec"\n"white wine delivery Quebec"\n[order wine online]\n"best wine under $20"\n"private import wine"',match:'Expression / Exact'},
+    'Spiritueux FR':{kws:'"acheter whisky québec"\n"rhum livraison rapide"\n[gin artisanal québec]\n"vodka premium en ligne"',match:'Expression / Exact'},
+    'Cocktails FR':{kws:'"recette cocktail maison"\n"ingrédients mojito"\n[sirop simple recette]',match:'Expression'},
+    'Négatifs globaux':{kws:'gratuit\nrecette seulement\nwikipedia\nfaire soi-même\nalcool maison',match:'Négatif large'},
+  },
+  tv:{
+    'Brand FR':{kws:'[Télé-Québec]\n[Tele-Quebec]\n[telequebec.tv]\n"émissions Télé-Québec"\n"regarder Télé-Québec en ligne"',match:'Exact / Expression'},
+    'Jeunesse FR':{kws:'"émissions jeunesse québec"\n"dessin animé québécois"\n[Passe-Partout en ligne]\n"télévision éducative enfants"',match:'Expression / Exact'},
+    'OTT FR':{kws:'"regarder TV en ligne québec"\n"streaming gratuit québec"\n[application télévision gratuite]\n"rattrapage émission Télé-Québec"',match:'Expression / Exact'},
+    'Négatifs':{kws:'netflix\ncrave\nradio-canada\npayant\nabonnement\ntélécharger illégalement',match:'Négatif large'},
+  },
+  generic:{
+    'Brand FR':{kws:'[Marque FR]\n[marque.com]\n"marque avis"\n"marque contact"',match:'Exact / Expression'},
+    'Brand EN':{kws:'[Brand EN]\n[brand.com]\n"brand reviews"\n"brand contact"',match:'Exact / Expression'},
+    'Service FR':{kws:'"[service] prix québec"\n"acheter [service] en ligne"\n[meilleur [service]]\n"[service] professionnel"',match:'Expression / Exact'},
+    'Service EN':{kws:'"[service] price canada"\n"buy [service] online"\n"best [service] review"',match:'Expression / Exact'},
+    'Négatifs':{kws:'gratuit\nfree\ncrack\ntélécharger\nhow to\nwikipedia',match:'Négatif large'},
+  }
+};
+
+const RSA={
+  saq:[
+    {camp:'sem-non-brand-vins | FR',lang:'FR',
+     h:['Achetez du vin en ligne – SAQ','Livraison rapide au Québec','Plus de 14 000 produits','Vins rouges, blancs et rosés','Importation privée disponible','Commandez avant 15h = J+1'],
+     d:['Découvrez notre sélection exclusive de vins du monde entier. Commandez en ligne et recevez à domicile.','Explorez nos vins sélectionnés par nos experts. Livraison gratuite dès 150$.']},
+    {camp:'sem-non-brand-vins | EN',lang:'EN',
+     h:['Buy Wine Online – SAQ','Fast Delivery Across Quebec','Over 14,000 Products Available','Red, White and Rosé Wines','Private Imports Available','Order Before 3PM = Next Day'],
+     d:['Discover our exclusive selection of wines from around the world. Order online for home delivery.','Wines carefully selected by our expert advisors. Free delivery on orders over $150.']},
+    {camp:'sem-brand | FR',lang:'FR',
+     h:['SAQ – Boutique officielle en ligne','Espace SAQ – Commandez en ligne','Vins et spiritueux du Québec','Commandez vos vins et spiritueux','Livraison rapide au Québec'],
+     d:['Magasinez vins, bières et spiritueux sur SAQ.com. Commandez pour livraison ou ramassage en succursale.','Nouveautés, exclusivités SAQ et meilleures sélections de la semaine.']},
+  ],
+  tv:[
+    {camp:'Tele-QC - Jeunesse FR',lang:'FR',
+     h:['Émissions jeunesse – Télé-Québec','Passe-Partout en ligne gratuit','Contenu éducatif pour enfants','Regardez les émissions en ligne','Télévision publique québécoise'],
+     d:['Découvrez nos émissions éducatives pour enfants sur Télé-Québec. Contenu gratuit, en français.','Passe-Partout, Boom! et plus encore. Regardez en ligne sur votre appareil préféré.']},
+  ],
+  generic:[
+    {camp:'Non-Brand | FR | Service',lang:'FR',
+     h:['[Service] – [Marque FR]','Solution [Service] au Québec','[Bénéfice principal] garanti','Essai gratuit 14 jours','[Service] professionnel','Devis gratuit en 24h'],
+     d:['Obtenez [résultat clé] avec notre solution [Service]. Plus de [X] clients satisfaits au Québec.','Commencez gratuitement dès aujourd\'hui. Pas de carte de crédit requise.']},
+    {camp:'Non-Brand | EN | Service',lang:'EN',
+     h:['[Service] – [Brand EN]','[Service] Solution in Canada','Guaranteed [Key Benefit]','14-Day Free Trial','Professional [Service]','Free Quote in 24h'],
+     d:['Get [key result] with our [Service] solution. Over [X] satisfied clients across Canada.','Start for free today. No credit card required for the 14-day trial.']},
+  ]
+};
+
+// ══════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════
+let CURR = 'saq';
+let CURR_STEP = 1;
+let CURR_SCRIPT = 'budget';
+
+// ══════════════════════════════════════════════════
+// NAVIGATION PRINCIPALE — event delegation
+// ══════════════════════════════════════════════════
+document.getElementById('main-nav').addEventListener('click', function(e){
+  const btn = e.target.closest('.nav-tab');
+  if(!btn) return;
+  const tab = btn.dataset.tab;
+  if(!tab) return;
+  document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+tab).classList.add('active');
+});
+
+// ══════════════════════════════════════════════════
+// SIDEBAR — event delegation
+// ══════════════════════════════════════════════════
+document.querySelector('.sidebar').addEventListener('click', function(e){
+  const item = e.target.closest('[data-client]');
+  if(!item) return;
+  CURR = item.dataset.client;
+  document.querySelectorAll('[data-client]').forEach(i=>i.classList.remove('active'));
+  item.classList.add('active');
+  applyClientToForm(CURR);
+  renderCampaigns(CURR);
+  updateSidebar(CURR);
+  document.getElementById('csv-sub').textContent = CLIENTS[CURR].name + ' · Structure opérationnelle · Prêt à importer';
+});
+
+function applyClientToForm(id){
+  const c = CLIENTS[id];
+  document.getElementById('p-account').value = id;
+  document.getElementById('p-url').value = c.url;
+  document.getElementById('p-kpi').value = c.kpi;
+  document.getElementById('p-budget').value = c.budget;
+  document.getElementById('p-roas-val').value = c.roas || 400;
+  document.getElementById('p-cpa-val').value = c.cpa || 45;
+  document.getElementById('p-brand-fr').value = c.brandFR;
+  document.getElementById('p-brand-en').value = c.brandEN;
+}
+
+function updateSidebar(id){
+  const c = CLIENTS[id];
+  document.getElementById('sb-active').textContent = c.active;
+  document.getElementById('sb-budget').textContent = c.budgetLabel;
+}
+
+// ══════════════════════════════════════════════════
+// STEP NAVIGATION
+// ══════════════════════════════════════════════════
+document.querySelector('.steps').addEventListener('click', function(e){
+  const s = e.target.closest('[data-step]');
+  if(s) goStep(+s.dataset.step);
+});
+
+function goStep(n){
+  CURR_STEP = n;
+  // Sync account select → CURR
+  const sel = document.getElementById('p-account');
+  if(sel) CURR = sel.value;
+
+  // Show/hide steps
+  document.querySelectorAll('.csv-step').forEach((el,i)=>{
+    el.style.display = (i+1 === n) ? 'block' : 'none';
+  });
+  // Update step indicators
+  document.querySelectorAll('.step').forEach(el=>{
+    const sn = +el.dataset.step;
+    el.className = 'step' + (sn===n?' active':sn<n?' done':'');
+  });
+  // Render content for specific steps
+  if(n===2) renderCampaigns(CURR);
+  if(n===3) renderKW();
+  if(n===4) renderRSA();
+  if(n===5) buildCSV();
+}
+
+// ══════════════════════════════════════════════════
+// CAMPAIGNS TABLE
+// ══════════════════════════════════════════════════
+const TYPE_TAG={'Search':'t-s','Shopping':'t-sh','Performance Max':'t-pm','Video':'t-di','Demand Gen':'t-di'};
+const LANG_TAG={'FR':'t-fr','EN':'t-en','FR+EN':'t-gy'};
+
+function renderCampaigns(id){
+  const c = CLIENTS[id]||CLIENTS.saq;
+  document.getElementById('camp-tbody').innerHTML = c.campaigns.map(camp=>`
+    <tr class="${camp.fix?'rw-w':''}">
+      <td style="max-width:260px"><div style="font-size:11px;font-weight:500;margin-bottom:1px">${camp.name}</div>${camp.fix?`<div style="font-size:10px;color:var(--orange)">⚠ ${camp.fix}</div>`:''}</td>
+      <td><span class="tag ${TYPE_TAG[camp.type]||'t-gy'}">${camp.type}</span></td>
+      <td><span class="tag ${LANG_TAG[camp.lang]||'t-gy'}">${camp.lang}</span></td>
+      <td class="mc">$${camp.budget}</td>
+      <td style="font-size:11px">${camp.strategy}</td>
+      <td style="font-size:11px;color:var(--accent)">${camp.target}</td>
+      <td><span class="tag t-en">PAUSED</span></td>
+    </tr>
+  `).join('');
+}
+
+// ══════════════════════════════════════════════════
+// KEYWORDS EDITOR
+// ══════════════════════════════════════════════════
+function renderKW(){
+  const tpl = KW[CURR]||KW.generic;
+  document.getElementById('kw-editor').innerHTML = Object.entries(tpl).map(([grp,d])=>`
+    <div style="margin-bottom:10px">
+      <div style="display:flex;align-items:center;gap:7px;margin-bottom:4px">
+        <span style="font-size:12px;font-weight:600">${grp}</span>
+        <span class="tag ${d.match.includes('Négatif')?'t-di':'t-s'}">${d.match}</span>
+      </div>
+      <textarea class="fc" data-grp="${grp}" style="min-height:80px;font-size:11px">${d.kws}</textarea>
+    </div>
+  `).join('');
+}
+
+// ══════════════════════════════════════════════════
+// RSA EDITOR
+// ══════════════════════════════════════════════════
+function renderRSA(){
+  const rsas = RSA[CURR]||RSA.generic;
+  document.getElementById('rsa-editor').innerHTML = rsas.map((rsa,i)=>`
+    <div style="background:var(--surf2);border:1px solid var(--bord);border-radius:4px;padding:12px;margin-bottom:10px">
+      <div style="display:flex;align-items:center;gap:7px;margin-bottom:8px">
+        <span style="font-size:12px;font-weight:600">${rsa.camp}</span>
+        <span class="tag ${rsa.lang==='FR'?'t-fr':'t-en'}">${rsa.lang}</span>
+      </div>
+      <div style="margin-bottom:8px">
+        <div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Headlines (≤ 30 car.)</div>
+        ${rsa.h.map((h,j)=>`
+          <div style="display:flex;align-items:center;gap:5px;margin-bottom:3px">
+            <span style="font-family:var(--mono);font-size:9px;color:var(--muted);min-width:20px">H${j+1}</span>
+            <input type="text" class="fc" value="${h}" maxlength="30" style="font-size:11px" oninput="checkCharLen(this,30,'rsa-h-${i}-${j}')">
+            <span style="font-family:var(--mono);font-size:9px;min-width:32px" id="rsa-h-${i}-${j}">${h.length}/30</span>
+          </div>
+        `).join('')}
+      </div>
+      <div>
+        <div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Descriptions (≤ 90 car.)</div>
+        ${rsa.d.map((d,j)=>`
+          <div style="display:flex;gap:5px;margin-bottom:3px;align-items:flex-start">
+            <span style="font-family:var(--mono);font-size:9px;color:var(--muted);min-width:20px;padding-top:7px">D${j+1}</span>
+            <textarea class="fc" maxlength="90" style="min-height:44px;font-size:11px" oninput="checkCharLen(this,90,'rsa-d-${i}-${j}')">${d}</textarea>
+            <span style="font-family:var(--mono);font-size:9px;min-width:38px;padding-top:7px" id="rsa-d-${i}-${j}">${d.length}/90</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function checkCharLen(el,max,counterId){
+  const n=el.value.length;
+  const counter=document.getElementById(counterId);
+  if(counter) counter.textContent=n+'/'+max;
+  el.style.borderColor=n>max?'var(--red)':n>max*.9?'var(--orange)':'';
+}
+
+// ══════════════════════════════════════════════════
+// CSV GENERATION
+// ══════════════════════════════════════════════════
+function buildCSV(){
+  const c = CLIENTS[CURR];
+  const url = document.getElementById('p-url').value;
+  const tROAS = document.getElementById('p-roas-val').value;
+  const tCPA = document.getElementById('p-cpa-val').value;
+
+  let rows=[];
+  rows.push(['Campaign','Campaign type','Campaign status','Budget','Budget type',
+    'Campaign bidding strategy type','Target ROAS (%)','Target CPA',
+    'Languages','Networks',
+    'Ad group','Ad group status','Max CPC',
+    'Keyword','Criterion type',
+    'Ad type','Headline 1','Headline 2','Headline 3',
+    'Description 1','Description 2',
+    'Final URL','Labels'].join(','));
+
+  c.campaigns.forEach(camp=>{
+    let strat='',tr='',tc='';
+    if(camp.strategy.includes('Target ROAS')||camp.strategy.includes('Conversion Value')){strat='Target ROAS';tr=tROAS;}
+    else if(camp.strategy.includes('Target Impression')){strat='Target Impression Share';}
+    else if(camp.strategy.includes('Conversion')){strat='Target CPA';tc=tCPA;}
+    else strat=camp.strategy;
+    const lang=camp.lang==='EN'?'English':camp.lang==='FR'?'French':'French;English';
+    const net=camp.type==='Search'?'Google search':camp.type==='Shopping'?'Google search;Shopping':'All';
+    const ct=camp.type==='Search'?'Search':camp.type==='Shopping'?'Shopping':camp.type==='Performance Max'?'Performance max':'Display';
+    rows.push([`"${camp.name}"`,ct,'Paused',camp.budget,'Daily',strat,tr,tc,lang,net,'','','','','','','','','','','','',`"${CURR.toUpperCase()}|IMPORT-2026"`].join(','));
+  });
+
+  rows.push('');rows.push('# GROUPES ANNONCES & MOTS-CLES');rows.push('');
+  const kwtpl=KW[CURR]||KW.generic;
+  const searchCamps=c.campaigns.filter(x=>x.type==='Search');
+  searchCamps.forEach((camp,ci)=>{
+    const grpName=Object.keys(kwtpl)[ci%Object.keys(kwtpl).length];
+    const kwdata=kwtpl[grpName];
+    if(!kwdata)return;
+    rows.push([`"${camp.name}"`, '','','','','','','','','',`"${grpName}"`, 'Enabled','1.00','','','','','','','','','',''].join(','));
+    const taEl=document.querySelector(`[data-grp="${grpName}"]`);
+    const kwLines=(taEl?taEl.value:kwdata.kws).split('\n').filter(k=>k.trim());
+    kwLines.forEach(kw=>{
+      kw=kw.trim();
+      let mt='Broad';
+      if(kw.startsWith('[')&&kw.endsWith(']')){mt='Exact';kw=kw.slice(1,-1);}
+      else if(kw.startsWith('"')&&kw.endsWith('"')){mt='Phrase';kw=kw.slice(1,-1);}
+      else if(kwdata.match.toLowerCase().includes('négatif')){mt='Negative broad';}
+      rows.push([`"${camp.name}"`, '','','','','','','','','',`"${grpName}"`, '','',`"${kw}"`,mt,'','','','','','','',''].join(','));
+    });
+  });
+
+  rows.push('');rows.push('# ANNONCES RSA');rows.push('');
+  const rsas=RSA[CURR]||RSA.generic;
+  rsas.forEach(rsa=>{
+    const mc=c.campaigns.find(x=>x.lang===rsa.lang&&x.type==='Search');
+    if(!mc)return;
+    rows.push([`"${mc.name}"`, '','','','','','','','','',`"RSA - ${rsa.lang} - ${rsa.camp}"`, 'Enabled','',
+      '','','Responsive search ad',
+      `"${rsa.h[0]||''}"`,`"${rsa.h[1]||''}"`,`"${rsa.h[2]||''}"`,
+      `"${rsa.d[0]||''}"`,`"${rsa.d[1]||''}"`,
+      `"${url}"`,`"${CURR.toUpperCase()}|RSA|2026"`].join(','));
+  });
+
+  const csv=rows.join('\n');
+  document.getElementById('csv-out').textContent=csv;
+
+  const total=c.campaigns.reduce((a,b)=>a+(b.budget||0),0);
+  document.getElementById('csv-kpis').innerHTML=`
+    <div class="kpi-c"><div class="kpi-l">Campagnes</div><div class="kpi-v kv-a">${c.campaigns.length}</div><div class="kpi-sub">toutes PAUSED</div></div>
+    <div class="kpi-c"><div class="kpi-l">Budget total/j</div><div class="kpi-v kv-a">$${total.toLocaleString('fr-CA')}</div><div class="kpi-sub">CAD</div></div>
+    <div class="kpi-c"><div class="kpi-l">Search</div><div class="kpi-v">${c.campaigns.filter(x=>x.type==='Search').length}</div><div class="kpi-sub">campagnes</div></div>
+    <div class="kpi-c"><div class="kpi-l">Lignes CSV</div><div class="kpi-v">${rows.length}</div><div class="kpi-sub">prêtes</div></div>
+  `;
+}
+
+document.getElementById('btn-copy-csv').addEventListener('click', function(){
+  const text=document.getElementById('csv-out').textContent;
+  if(!text){alert('Générer d\'abord le CSV (étape 5).');return;}
+  navigator.clipboard.writeText(text).then(()=>{
+    this.textContent='✓ Copié!';
+    setTimeout(()=>this.textContent='📋 Copier',2000);
+  });
+});
+
+document.getElementById('btn-dl-csv').addEventListener('click', function(){
+  const text=document.getElementById('csv-out').textContent;
+  if(!text){alert('Générer d\'abord le CSV (étape 5).');return;}
+  const blob=new Blob([text],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=CURR+'_google_ads_'+new Date().toISOString().slice(0,10)+'.csv';a.click();
+  URL.revokeObjectURL(url);
+});
+
+// ══════════════════════════════════════════════════
+// SCRIPTS — event delegation
+// ══════════════════════════════════════════════════
+document.getElementById('script-tabs').addEventListener('click', function(e){
+  const btn=e.target.closest('.itab');
+  if(!btn)return;
+  CURR_SCRIPT=btn.dataset.script;
+  document.querySelectorAll('.itab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderScriptPanel(CURR_SCRIPT);
+});
+
+function renderScriptPanel(type){
+  const CFG={
+    budget:{label:'Budget Monitor',freq:'Toutes les heures',desc:'Dépense > seuil % → Email + pause urgence',fields:[
+      {id:'sw',label:'Alerte à (% budget)',val:'85',type:'number'},
+      {id:'sp',label:'Pause urgence à (%)',val:'100',type:'number'},
+      {id:'se',label:'Email alerte',val:'tommy.dube@cossettemedia.com',type:'email'},
+      {id:'ss',label:'Google Sheet ID',val:'',placeholder:'Coller l\'ID du Sheet',type:'text'},
+    ]},
+    anomaly:{label:'Anomaly Detector',freq:'Quotidienne 7h00',desc:'Compare J-1 vs moyenne 28 jours · CTR, CPA, Conv., Coût',fields:[
+      {id:'ac',label:'Seuil CTR (%)',val:'30',type:'number'},
+      {id:'ap',label:'Seuil CPA (%)',val:'25',type:'number'},
+      {id:'ae',label:'Email alerte',val:'tommy.dube@cossettemedia.com',type:'email'},
+      {id:'as',label:'Google Sheet ID',val:'',placeholder:'ID du Sheet',type:'text'},
+    ]},
+    searchterms:{label:'Search Terms Miner',freq:'Lundi 6h00',desc:'Rapport négatifs + opportunités exact match',fields:[
+      {id:'tc',label:'Coût sans conv. ($)',val:'50',type:'number'},
+      {id:'td',label:'Fenêtre (jours)',val:'30',type:'number'},
+      {id:'te',label:'Email rapport',val:'tommy.dube@cossettemedia.com',type:'email'},
+      {id:'ts',label:'Google Sheet ID',val:'',placeholder:'ID du Sheet',type:'text'},
+    ]},
+    quality:{label:'Quality Score Tracker',freq:'Quotidienne 6h00',desc:'Alerte QS ≤ seuil + log historique',fields:[
+      {id:'qt',label:'Seuil QS (sur 10)',val:'5',type:'number'},
+      {id:'qe',label:'Email alerte',val:'tommy.dube@cossettemedia.com',type:'email'},
+      {id:'qs',label:'Google Sheet ID',val:'',placeholder:'ID du Sheet',type:'text'},
+    ]},
+    pmax:{label:'PMax Monitor',freq:'Mer. & Sam. 7h00',desc:'Asset groups, ROAS réel vs cible, statut apprentissage',fields:[
+      {id:'pr',label:'ROAS cible (%)',val:'400',type:'number'},
+      {id:'pt',label:'Tolérance ± (%)',val:'20',type:'number'},
+      {id:'pe',label:'Email rapport',val:'tommy.dube@cossettemedia.com',type:'email'},
+      {id:'ps',label:'Google Sheet ID',val:'',placeholder:'ID du Sheet',type:'text'},
+    ]},
+  };
+  const cfg=CFG[type];
+  const codeId='sc-'+type;
+  document.getElementById('scripts-content').innerHTML=`
+    <div class="card" style="margin-bottom:10px">
+      <div class="card-body">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;margin-bottom:12px">
+          <div><div class="kpi-l">Script</div><div style="font-size:12px;font-weight:600">${cfg.label}</div></div>
+          <div><div class="kpi-l">Fréquence</div><div style="font-size:12px;font-weight:600;color:var(--accent)">${cfg.freq}</div></div>
+          <div style="grid-column:span 2"><div class="kpi-l">Description</div><div style="font-size:12px">${cfg.desc}</div></div>
+        </div>
+        <div class="form-grid">
+          ${cfg.fields.map(f=>`<div class="fg"><label>${f.label}</label><input type="${f.type}" class="fc" id="sf-${f.id}" value="${f.val}" ${f.placeholder?`placeholder="${f.placeholder}"`:''}></div>`).join('')}
+        </div>
+        <button class="btn btn-p btn-sm" onclick="buildScript('${type}','${codeId}')">⚙️ Générer le script</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-hdr">
+        <div class="card-title">JavaScript — Copier dans Google Ads → Tools → Scripts</div>
+        <button class="btn btn-sm btn-s" onclick="copyEl('${codeId}', this)">📋 Copier</button>
+      </div>
+      <div class="card-body" style="padding:0"><div class="code-blk" id="${codeId}">Cliquer "Générer le script" ci-dessus.</div></div>
+    </div>
+  `;
+  buildScript(type, codeId);
+}
+
+function gv(id){return(document.getElementById('sf-'+id)||{}).value||'';}
+
+function buildScript(type,codeId){
+  const el=document.getElementById(codeId);
+  if(!el)return;
+  let code='';
+  if(type==='budget') code=SCRIPTS.budget(gv('sw')||'85',gv('sp')||'100',gv('se')||'tommy.dube@cossettemedia.com',gv('ss')||'SHEET_ID');
+  else if(type==='anomaly') code=SCRIPTS.anomaly(gv('ac')||'30',gv('ap')||'25',gv('ae')||'tommy.dube@cossettemedia.com',gv('as')||'SHEET_ID');
+  else if(type==='searchterms') code=SCRIPTS.searchterms(gv('tc')||'50',gv('td')||'30',gv('te')||'tommy.dube@cossettemedia.com',gv('ts')||'SHEET_ID');
+  else if(type==='quality') code=SCRIPTS.quality(gv('qt')||'5',gv('qe')||'tommy.dube@cossettemedia.com',gv('qs')||'SHEET_ID');
+  else if(type==='pmax') code=SCRIPTS.pmax(gv('pr')||'400',gv('pt')||'20',gv('pe')||'tommy.dube@cossettemedia.com',gv('ps')||'SHEET_ID');
+  el.textContent=code;
+}
+
+function copyEl(id,btn){
+  const el=document.getElementById(id);
+  if(!el||!el.textContent.trim()){alert('Rien à copier.');return;}
+  navigator.clipboard.writeText(el.textContent).then(()=>{
+    const orig=btn.textContent;
+    btn.textContent='✓ Copié!';
+    setTimeout(()=>btn.textContent=orig,2000);
+  });
+}
+
+// ══════════════════════════════════════════════════
+// SCRIPTS CODE
+// ══════════════════════════════════════════════════
+const SCRIPTS={
+budget:(warn,stop,email,sheet)=>`// BUDGET MONITOR v2.0 — Tommy Dubé · Cossette Media
+// Fréquence : Toutes les heures
+// Alerte à ${warn}% du budget · Pause urgence à ${stop}%
+
+const CONFIG = {
+  EMAIL: '${email}',
+  SHEET_ID: '${sheet}',
+  SEUIL_ALERTE: ${warn},
+  SEUIL_PAUSE: ${stop},
+  COMPTE: AdsApp.currentAccount().getName(),
+  TZ: 'America/Toronto'
+};
+
+function main() {
+  const alertes = [];
+  const camps = AdsApp.campaigns()
+    .withCondition('campaign.status = ENABLED')
+    .get();
+
+  while (camps.hasNext()) {
+    const camp = camps.next();
+    const stats = camp.getStatsFor('TODAY');
+    const depense = stats.getCost();
+    const budget = camp.getBudget().getAmount();
+    if (budget === 0) continue;
+    const pct = depense / budget * 100;
+
+    if (pct >= CONFIG.SEUIL_PAUSE) {
+      camp.pause();
+      alertes.push({ sev: '🔴 CRITIQUE', camp: camp.getName(), msg: 'PAUSÉE — ' + pct.toFixed(0) + '% budget', depense, budget });
+    } else if (pct >= CONFIG.SEUIL_ALERTE) {
+      alertes.push({ sev: '🟡 ATTENTION', camp: camp.getName(), msg: pct.toFixed(0) + '% consommé', depense, budget });
+    }
+  }
+
+  if (alertes.length > 0) sendEmail(alertes);
+  if (CONFIG.SHEET_ID !== 'SHEET_ID') logSheet(alertes);
+}
+
+function sendEmail(alertes) {
+  const subject = '[' + CONFIG.COMPTE + '] Budget — ' + alertes.filter(a=>a.sev.includes('CRITIQUE')).length + ' critique(s)';
+  let body = CONFIG.COMPTE + ' · ' + new Date().toLocaleString('fr-CA', {timeZone: CONFIG.TZ}) + '\\n\\n';
+  alertes.forEach(a => {
+    body += a.sev + ' · ' + a.camp.substring(0,60) + '\\n';
+    body += '  ' + a.msg + ' · Dépense: $' + a.depense.toFixed(2) + ' / $' + a.budget.toFixed(2) + '\\n\\n';
+  });
+  MailApp.sendEmail({ to: CONFIG.EMAIL, subject, body });
+}
+
+function logSheet(alertes) {
+  try {
+    const ss = SpreadsheetApp.openById(CONFIG.SHEET_ID);
+    let sh = ss.getSheetByName('Budget Log') || ss.insertSheet('Budget Log');
+    if (sh.getLastRow() === 0) sh.appendRow(['Date','Compte','Campagne','Sévérité','Dépense','Budget','%']);
+    const d = new Date().toLocaleString('fr-CA', {timeZone: CONFIG.TZ});
+    alertes.forEach(a => sh.appendRow([d, CONFIG.COMPTE, a.camp.substring(0,60), a.sev, a.depense.toFixed(2), a.budget.toFixed(2), (a.depense/a.budget*100).toFixed(1)+'%']));
+  } catch(e) { Logger.log('Erreur Sheet: ' + e.message); }
+}`,
+
+anomaly:(ctr,cpa,email,sheet)=>`// ANOMALY DETECTOR v2.0 — Tommy Dubé · Cossette Media
+// Fréquence : Quotidienne à 7h00
+// Compare J-1 vs moyenne 28 jours · Seuil CTR: ${ctr}% · CPA: ${cpa}%
+
+const CONFIG = {
+  EMAIL: '${email}',
+  SHEET_ID: '${sheet}',
+  SEUIL_CTR: ${ctr},
+  SEUIL_CPA: ${cpa},
+  SEUIL_CONV: 40,
+  COMPTE: AdsApp.currentAccount().getName(),
+  TZ: 'America/Toronto'
+};
+
+function main() {
+  const anomalies = [];
+  const camps = AdsApp.campaigns()
+    .withCondition('campaign.status = ENABLED')
+    .get();
+
+  while (camps.hasNext()) {
+    const camp = camps.next();
+    const base = camp.getStatsFor('LAST_28_DAYS');
+    const recnt = camp.getStatsFor('YESTERDAY');
+    const imp = recnt.getImpressions();
+    if (imp < 100) continue;
+
+    const baseCtr = base.getCtr();
+    const baseCpa = base.getConversions() > 0 ? base.getCost() / base.getConversions() / 28 : 0;
+    const baseConv = base.getConversions() / 28;
+    const nowCtr = recnt.getCtr();
+    const nowCpa = recnt.getConversions() > 0 ? recnt.getCost() / recnt.getConversions() : 0;
+    const nowConv = recnt.getConversions();
+
+    const checks = [
+      {m:'CTR', b:baseCtr, n:nowCtr, seuil:CONFIG.SEUIL_CTR, dir:'baisse'},
+      {m:'CPA ($)', b:baseCpa, n:nowCpa, seuil:CONFIG.SEUIL_CPA, dir:'hausse'},
+      {m:'Conversions', b:baseConv, n:nowConv, seuil:CONFIG.SEUIL_CONV, dir:'baisse'},
+    ];
+
+    checks.forEach(c => {
+      if (c.b === 0) return;
+      const delta = (c.n - c.b) / c.b * 100;
+      const triggered = c.dir === 'baisse' ? delta < -c.seuil : delta > c.seuil;
+      if (triggered) {
+        anomalies.push({
+          camp: camp.getName().substring(0,60),
+          metrique: c.m,
+          base: c.b.toFixed(2),
+          now: c.n.toFixed(2),
+          delta: delta.toFixed(1) + '%',
+          sev: Math.abs(delta) > c.seuil * 2 ? '🔴 CRITIQUE' : '🟡 ATTENTION'
+        });
+      }
+    });
+  }
+
+  Logger.log(anomalies.length + ' anomalies détectées');
+  if (anomalies.length > 0) {
+    sendEmail(anomalies);
+    if (CONFIG.SHEET_ID !== 'SHEET_ID') logSheet(anomalies);
+  }
+}
+
+function sendEmail(anomalies) {
+  const critiques = anomalies.filter(a => a.sev.includes('CRITIQUE'));
+  const subject = '[ANOMALIE] ' + CONFIG.COMPTE + ' — ' + critiques.length + ' critique(s)';
+  let body = CONFIG.COMPTE + ' · Rapport anomalies\\n\\n';
+  anomalies.forEach(a => {
+    body += a.sev + ' · ' + a.camp + '\\n';
+    body += '  ' + a.metrique + ': ' + a.base + ' → ' + a.now + ' (' + a.delta + ')\\n\\n';
+  });
+  MailApp.sendEmail({ to: CONFIG.EMAIL, subject, body });
+}
+
+function logSheet(anomalies) {
+  try {
+    const ss = SpreadsheetApp.openById(CONFIG.SHEET_ID);
+    let sh = ss.getSheetByName('Anomalies') || ss.insertSheet('Anomalies');
+    if (sh.getLastRow() === 0) sh.appendRow(['Date','Campagne','Métrique','Base 28j','Hier','Delta','Sévérité']);
+    const d = new Date().toLocaleString('fr-CA', {timeZone: CONFIG.TZ});
+    anomalies.forEach(a => sh.appendRow([d, a.camp, a.metrique, a.base, a.now, a.delta, a.sev]));
+  } catch(e) { Logger.log('Erreur Sheet: ' + e.message); }
+}`,
+
+searchterms:(cost,days,email,sheet)=>`// SEARCH TERMS MINER v2.0 — Tommy Dubé · Cossette Media
+// Fréquence : Lundi à 6h00
+// Coût sans conv. > $${cost} → négatif · Fenêtre : ${days} jours
+
+const CONFIG = {
+  EMAIL: '${email}',
+  SHEET_ID: '${sheet}',
+  COUT_SEUIL: ${cost},
+  FENETRE: ${days},
+  MIN_IMP: 50,
+  COMPTE: AdsApp.currentAccount().getName(),
+  TZ: 'America/Toronto'
+};
+
+function main() {
+  const aAjouter = [], negatifs = [], opportunites = [];
+  const query = \`
+    SELECT campaign.name, ad_group.name,
+      search_term_view.search_term,
+      metrics.impressions, metrics.clicks,
+      metrics.cost_micros, metrics.conversions, metrics.ctr
+    FROM search_term_view
+    WHERE segments.date DURING LAST_\${CONFIG.FENETRE}_DAYS
+      AND metrics.impressions >= \${CONFIG.MIN_IMP}
+    ORDER BY metrics.cost_micros DESC LIMIT 500\`;
+
+  const res = AdsApp.search(query);
+  while (res.hasNext()) {
+    const row = res.next();
+    const terme = row.searchTermView.searchTerm;
+    const cout = row.metrics.costMicros / 1000000;
+    const conv = row.metrics.conversions;
+    const imp = row.metrics.impressions;
+    const ctr = row.metrics.ctr;
+    const entry = { terme, cout: cout.toFixed(2), conv, imp, ctr: (ctr*100).toFixed(2)+'%', camp: row.campaign.name.substring(0,50) };
+
+    if (conv >= 2 && cout/conv < 100) aAjouter.push(entry);
+    else if (cout > CONFIG.COUT_SEUIL && conv === 0) negatifs.push(entry);
+    else if (imp > 200 && ctr > 0.05 && conv === 0) opportunites.push(entry);
+  }
+
+  Logger.log('À ajouter: ' + aAjouter.length + ' · Négatifs: ' + negatifs.length);
+  if (CONFIG.SHEET_ID !== 'SHEET_ID') writeSheet(aAjouter, negatifs, opportunites);
+  sendEmail(aAjouter, negatifs, opportunites);
+}
+
+function writeSheet(add, neg, opp) {
+  const ss = SpreadsheetApp.openById(CONFIG.SHEET_ID);
+  const d = new Date().toLocaleDateString('fr-CA');
+  const write = (name, data, hdrs) => {
+    let sh = ss.getSheetByName(name) || ss.insertSheet(name);
+    sh.clearContents(); sh.appendRow(hdrs);
+    data.forEach(r => sh.appendRow([d, r.terme, r.camp, r.conv || 0, r.cout, r.imp, r.ctr]));
+  };
+  write('Ajouter Exact', add, ['Date','Terme','Campagne','Conv.','Coût($)','Imp.','CTR']);
+  write('Negatifs', neg, ['Date','Terme','Campagne','Conv.','Coût gaspillé($)','Imp.','CTR']);
+  write('Opportunites', opp, ['Date','Terme','Campagne','Conv.','Coût($)','Imp.','CTR']);
+}
+
+function sendEmail(add, neg, opp) {
+  const subject = '[Search Terms] ' + CONFIG.COMPTE + ' — ' + neg.length + ' négatifs · ' + add.length + ' à ajouter';
+  let body = CONFIG.COMPTE + ' · Rapport Search Terms\\n\\n';
+  body += '=== À AJOUTER EN EXACT (' + add.length + ') ===\\n';
+  add.slice(0,10).forEach(t => body += '[' + t.terme + '] — ' + t.conv + ' conv. · $' + t.cout + '\\n');
+  body += '\\n=== NÉGATIFS (' + neg.length + ') ===\\n';
+  neg.slice(0,15).forEach(t => body += t.terme + ' — $' + t.cout + ' gaspillé · 0 conv.\\n');
+  if (CONFIG.SHEET_ID !== 'SHEET_ID') body += '\\n→ Sheet: https://docs.google.com/spreadsheets/d/' + CONFIG.SHEET_ID;
+  MailApp.sendEmail({ to: CONFIG.EMAIL, subject, body });
+}`,
+
+quality:(thresh,email,sheet)=>`// QUALITY SCORE TRACKER v2.0 — Tommy Dubé · Cossette Media
+// Fréquence : Quotidienne à 6h00
+// Alerte si QS ≤ ${thresh} · Log historique Google Sheet
+
+const CONFIG = {
+  EMAIL: '${email}',
+  SHEET_ID: '${sheet}',
+  QS_SEUIL: ${thresh},
+  COMPTE: AdsApp.currentAccount().getName(),
+  TZ: 'America/Toronto'
+};
+
+function main() {
+  const problemes = [];
+  const distrib = {};
+  for (let i=1;i<=10;i++) distrib[i]=0;
+
+  const query = \`
+    SELECT campaign.name, ad_group.name,
+      ad_group_criterion.keyword.text,
+      ad_group_criterion.quality_info.quality_score,
+      ad_group_criterion.quality_info.creative_quality_score,
+      ad_group_criterion.quality_info.post_click_quality_score,
+      ad_group_criterion.quality_info.search_predicted_ctr,
+      metrics.impressions, metrics.cost_micros, metrics.conversions
+    FROM keyword_view
+    WHERE campaign.status = ENABLED
+      AND ad_group.status = ENABLED
+      AND ad_group_criterion.status = ENABLED
+      AND metrics.impressions > 100
+    ORDER BY metrics.impressions DESC LIMIT 1000\`;
+
+  const res = AdsApp.search(query);
+  while (res.hasNext()) {
+    const row = res.next();
+    const qs = row.adGroupCriterion.qualityInfo.qualityScore || 0;
+    if (qs >= 1 && qs <= 10) distrib[qs]++;
+    if (qs > 0 && qs <= CONFIG.QS_SEUIL) {
+      problemes.push({
+        kw: row.adGroupCriterion.keyword.text,
+        camp: row.campaign.name.substring(0,50),
+        qs, cout: (row.metrics.costMicros/1000000).toFixed(2),
+        imp: row.metrics.impressions, conv: row.metrics.conversions,
+        ctrQs: row.adGroupCriterion.qualityInfo.searchPredictedCtr || 'N/A',
+        pertinence: row.adGroupCriterion.qualityInfo.creativeQualityScore || 'N/A',
+        lp: row.adGroupCriterion.qualityInfo.postClickQualityScore || 'N/A'
+      });
+    }
+  }
+
+  Logger.log('Problèmes QS ≤ ${thresh}: ' + problemes.length);
+  if (CONFIG.SHEET_ID !== 'SHEET_ID') logSheet(problemes, distrib);
+  if (problemes.length > 0) sendEmail(problemes, distrib);
+}
+
+function logSheet(problemes, distrib) {
+  try {
+    const ss = SpreadsheetApp.openById(CONFIG.SHEET_ID);
+    let sh = ss.getSheetByName('Quality Score') || ss.insertSheet('Quality Score');
+    if (sh.getLastRow()===0) sh.appendRow(['Date','Mot-clé','Campagne','QS','Imp.','Coût($)','Conv.','CTR attendu','Pertinence','LP']);
+    const d = new Date().toLocaleDateString('fr-CA');
+    problemes.forEach(p => sh.appendRow([d, p.kw, p.camp, p.qs, p.imp, p.cout, p.conv, p.ctrQs, p.pertinence, p.lp]));
+  } catch(e) { Logger.log('Erreur Sheet: ' + e.message); }
+}
+
+function sendEmail(problemes, distrib) {
+  const subject = '[QS Alert] ' + CONFIG.COMPTE + ' — ' + problemes.length + ' mots-clés QS ≤ ${thresh}';
+  let body = CONFIG.COMPTE + ' · Quality Score Tracker\\n\\n';
+  body += 'Mots-clés QS ≤ ${thresh}: ' + problemes.length + '\\n\\n';
+  problemes.sort((a,b)=>b.cout-a.cout).slice(0,20).forEach(p => {
+    body += 'QS ' + p.qs + '/10 · [' + p.kw + ']\\n';
+    body += '  Camp: ' + p.camp + ' · Coût: $' + p.cout + ' · CTR: ' + p.ctrQs + ' · LP: ' + p.lp + '\\n\\n';
+  });
+  body += '\\nACTIONS:\\n→ CTR sous la moyenne → Revoir les headlines RSA\\n→ Pertinence faible → Grouper les MC par intention précise\\n→ LP faible → Améliorer cohérence LP↔annonce';
+  MailApp.sendEmail({ to: CONFIG.EMAIL, subject, body });
+}`,
+
+pmax:(roas,tol,email,sheet)=>`// PMAX MONITOR v2.0 — Tommy Dubé · Cossette Media
+// Fréquence : Mercredi et Samedi à 7h00
+// ROAS cible: ${roas}% · Tolérance ±${tol}%
+
+const CONFIG = {
+  EMAIL: '${email}',
+  SHEET_ID: '${sheet}',
+  TARGET_ROAS: ${roas},
+  TOLERANCE: ${tol},
+  COMPTE: AdsApp.currentAccount().getName(),
+  TZ: 'America/Toronto'
+};
+
+function main() {
+  const rapport = [], alertes = [];
+
+  const query = \`
+    SELECT campaign.name, campaign.status,
+      campaign.target_roas.target_roas,
+      metrics.cost_micros, metrics.conversions,
+      metrics.conversions_value, metrics.impressions, metrics.clicks
+    FROM campaign
+    WHERE campaign.advertising_channel_type = PERFORMANCE_MAX
+      AND campaign.status = ENABLED\`;
+
+  const res = AdsApp.search(query);
+  while (res.hasNext()) {
+    const row = res.next();
+    const cout = row.metrics.costMicros / 1000000;
+    const val = row.metrics.conversionsValue;
+    const conv = row.metrics.conversions;
+    const roasReel = cout > 0 ? val / cout * 100 : 0;
+    const cpaReel = conv > 0 ? cout / conv : 0;
+    const min = CONFIG.TARGET_ROAS * (1 - CONFIG.TOLERANCE/100);
+    const max = CONFIG.TARGET_ROAS * (1 + CONFIG.TOLERANCE/100);
+    const ok = roasReel >= min && roasReel <= max;
+
+    rapport.push({
+      camp: row.campaign.name.substring(0,70),
+      roas: roasReel.toFixed(0)+'%',
+      cpa: cpaReel > 0 ? '$'+cpaReel.toFixed(2) : 'N/A',
+      cout: '$'+cout.toFixed(2), conv: conv.toFixed(1), val: '$'+val.toFixed(2),
+      statut: ok ? '✅ Dans la cible' : roasReel < min ? '🔴 Sous la cible' : '⚠️ Trop restrictif'
+    });
+
+    if (!ok && cout > 50) {
+      alertes.push({
+        camp: row.campaign.name.substring(0,60),
+        pb: 'ROAS '+roasReel.toFixed(0)+'% vs cible '+CONFIG.TARGET_ROAS+'% (±'+CONFIG.TOLERANCE+'%)',
+        action: roasReel < min ? 'Revoir asset groups · Vérifier signaux audience' : 'Volume réduit — envisager baisser tROAS de 10%'
+      });
+    }
+  }
+
+  if (CONFIG.SHEET_ID !== 'SHEET_ID') logSheet(rapport);
+  sendEmail(rapport, alertes);
+}
+
+function logSheet(rapport) {
+  try {
+    const ss = SpreadsheetApp.openById(CONFIG.SHEET_ID);
+    let sh = ss.getSheetByName('PMax Monitor') || ss.insertSheet('PMax Monitor');
+    if (sh.getLastRow()===0) sh.appendRow(['Date','Campagne','ROAS réel','CPA réel','Coût','Conv.','Valeur','Statut']);
+    const d = new Date().toLocaleDateString('fr-CA');
+    rapport.forEach(r => sh.appendRow([d, r.camp, r.roas, r.cpa, r.cout, r.conv, r.val, r.statut]));
+  } catch(e) { Logger.log('Erreur Sheet: ' + e.message); }
+}
+
+function sendEmail(rapport, alertes) {
+  const subject = '[PMax] ' + CONFIG.COMPTE + ' — ' + rapport.length + ' campagnes · ' + alertes.length + ' alerte(s)';
+  let body = CONFIG.COMPTE + ' · Performance Max Monitor\\nROAS cible: ${roas}% ±${tol}%\\n\\n';
+  rapport.forEach(r => { body += r.statut + ' · ' + r.camp + '\\n  ROAS: '+r.roas+' · CPA: '+r.cpa+' · Coût: '+r.cout+'\\n\\n'; });
+  if (alertes.length) {
+    body += '=== ALERTES ===\\n';
+    alertes.forEach(a => { body += '⚠️ '+a.camp+'\\n  '+a.pb+'\\n  Action: '+a.action+'\\n\\n'; });
+  }
+  body += '\\nRÈGLES D\'OR PMAX:\\n→ Ne JAMAIS modifier pendant les 14 premiers jours\\n→ Ajustement max: ±15% espacé de 14j minimum\\n→ OptScore < 50% = revoir asset groups';
+  MailApp.sendEmail({ to: CONFIG.EMAIL, subject, body });
+}`
+};
+
+// ══════════════════════════════════════════════════
+// DASHBOARD
+// ══════════════════════════════════════════════════
+const ALERTS_DATA=[
+  {sev:'🔴',camp:'sem-non-brand-vins | FR',metric:'Budget',val:'$250 (max)',seuil:'$400 requis',action:'Augmenter à $400 — Limited by budget 6 semaines'},
+  {sev:'🔴',camp:'sem-non-brand-spiritueux | FR',metric:'Imp. Share',val:'22%',seuil:'> 50%',action:'IS très bas — augmenter budget ou enchère'},
+  {sev:'🟡',camp:'pmax-generique | estivale | FR',metric:'Opt. Score',val:'58%',seuil:'> 80%',action:'Ajouter vidéos + Customer Match dans asset groups'},
+  {sev:'🟡',camp:'sem-brand | generique | FR',metric:'Stratégie',val:'Max Clics',seuil:'Target IS',action:'Changer pour Target IS 90% position absolue'},
+  {sev:'🟡',camp:'sem-brand | generique | EN',metric:'Stratégie',val:'Max Clics',seuil:'Target IS',action:'Changer pour Target IS 90% position absolue'},
+  {sev:'🔵',camp:'shopping-fea | faible-en-alcool',metric:'Conv. Rate',val:'33%',seuil:'tROAS actif?',action:'Conv. Rate 33% → passer en Max Conv. Value maintenant'},
+];
+
+document.getElementById('btn-sim').addEventListener('click', function(){
+  const c=CLIENTS[CURR];
+  document.getElementById('alerts-tbody').innerHTML=ALERTS_DATA.map(a=>`
+    <tr class="${a.sev.includes('🔴')?'rw-d':a.sev.includes('🟡')?'rw-w':''}">
+      <td style="font-size:14px">${a.sev}</td>
+      <td style="font-size:11px;max-width:180px">${a.camp}</td>
+      <td>${a.metric}</td>
+      <td class="mc" style="color:${a.sev.includes('🔴')?'var(--red)':a.sev.includes('🟡')?'var(--orange)':'var(--blue)'}">${a.val}</td>
+      <td class="mc">${a.seuil}</td>
+      <td style="font-size:11px;color:var(--muted2)">${a.action}</td>
+      <td class="mc">${Math.floor(Math.random()*5+1)}h</td>
+    </tr>`).join('');
+  document.getElementById('perf-tbody').innerHTML=c.campaigns.slice(0,8).map(camp=>`
+    <tr>
+      <td style="font-size:11px;max-width:200px">${camp.name.substring(0,55)}</td>
+      <td><span class="tag ${TYPE_TAG[camp.type]||'t-gy'}" style="font-size:9px">${camp.type}</span></td>
+      <td class="mc">$${(camp.budget*6.2+Math.random()*40).toFixed(0)}</td>
+      <td class="mc">${Math.floor(Math.random()*40+5)}</td>
+      <td class="mc" style="color:var(--green)">$${(Math.random()*20+35).toFixed(2)}</td>
+      <td class="mc" style="color:var(--accent)">${(Math.random()*150+320).toFixed(0)}%</td>
+      <td class="mc">${(Math.random()*25+55).toFixed(0)}%</td>
+      <td style="font-size:11px">${Math.random()>.3?'✅ Stable':'⚠️ Surveiller'}</td>
+    </tr>`).join('');
+  const nb=ALERTS_DATA.filter(a=>a.sev.includes('🔴')).length;
+  document.getElementById('d-spend').textContent='$'+(Math.random()*15000+28000).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,' ');
+  document.getElementById('d-cpa').textContent='$'+(Math.random()*8+40).toFixed(2);
+  document.getElementById('d-roas').textContent=(Math.random()*80+370).toFixed(0)+'%';
+  document.getElementById('d-is').textContent=(Math.random()*8+78).toFixed(0)+'%';
+  document.getElementById('d-alerts').textContent=nb;
+  document.getElementById('d-learn').textContent='2';
+  document.getElementById('sb-alerts').textContent=nb;
+});
+
+document.getElementById('btn-clear').addEventListener('click', function(){
+  document.getElementById('alerts-tbody').innerHTML='<tr><td colspan="7" style="text-align:center;padding:16px;color:var(--muted)">Toutes les alertes acquittées ✓</td></tr>';
+  document.getElementById('d-alerts').textContent='0';
+  document.getElementById('sb-alerts').textContent='0';
+});
+
+// ══════════════════════════════════════════════════
+// RÈGLES AUTOMATISÉES
+// ══════════════════════════════════════════════════
+function renderRules(){
+  const rules=[
+    {title:'🔴 Pause annonces CPA > 3× la cible',freq:'Quotidienne 8h00',cond:'Cost / conv. > [CPA_CIBLE × 3] ET Conversions = 0 (30 derniers jours)',action:'Pause the ad',risk:'Modéré — vérifier tracking avant activation',note:'Protège contre les annonces qui brûlent le budget. Vérifier manuellement avant réactivation.',c:'var(--red)'},
+    {title:'🟡 Alerte budget 85% consommé',freq:'Toutes les heures',cond:'Today\'s spend / Daily budget > 0.85',action:'Send email notification',risk:'Faible — alerte seulement, aucune modification',note:'Email précoce pour réagir avant dépassement. Le Script Budget Monitor est plus puissant.',c:'var(--orange)'},
+    {title:'🟡 Alerte Impression Share Brand < 80%',freq:'Quotidienne 9h00',cond:'Search Impression Share < 80% (campagnes Brand — label = BRAND)',action:'Send email alert',risk:'Faible — alerte seulement',note:'Un concurrent qui monte en IS Brand = signal critique. Agir dans les 24h.',c:'var(--orange)'},
+    {title:'🟢 Augmenter budget si ROAS > cible × 1.5',freq:'Hebdomadaire Lundi 8h00',cond:'Conv. value / cost > [ROAS_CIBLE × 1.5] ET Clicks > 100 (7 derniers jours)',action:'Increase budget by 15%',risk:'Modéré — vérifier que le volume est réel, pas une anomalie tracking',note:'Scaler les campagnes qui surperforment. Plafonner à +15% par semaine.',c:'var(--green)'},
+    {title:'🔴 Pause mots-clés sans conv. > 60 jours',freq:'Hebdomadaire Dimanche 8h00',cond:'Conversions = 0 ET Cost > $100 ET Period > 60 days (campagnes conversion uniquement)',action:'Pause keyword',risk:'Élevé — bien filtrer par label pour n\'appliquer qu\'aux campagnes conversion',note:'Ne PAS appliquer aux campagnes Brand ou notoriété — KPI différents.',c:'var(--red)'},
+    {title:'🔵 Activer campagne saisonnière à date cible',freq:'Quotidienne 0h01',cond:'Date = [Date_Lancement_Promo]',action:'Enable campaign',risk:'Faible — vérifier annonces approuvées 48h avant activation',note:'Pour campagnes saisonnières. Mettre en place 48h avant pour éviter délais de diffusion.',c:'var(--blue)'},
+  ];
+  document.getElementById('rules-list').innerHTML=rules.map(r=>`
+    <div class="card" style="border-left:3px solid ${r.c};margin-bottom:10px">
+      <div class="card-body">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <div style="font-size:13px;font-weight:600">${r.title}</div>
+          <span class="tag t-gy">${r.freq}</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+          <div><div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;margin-bottom:2px">Condition</div>
+            <div style="font-family:var(--mono);font-size:10px;background:var(--surf2);padding:5px 8px;border-radius:3px">${r.cond}</div></div>
+          <div><div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;margin-bottom:2px">Action</div>
+            <div style="font-family:var(--mono);font-size:10px;background:var(--surf2);padding:5px 8px;border-radius:3px">${r.action}</div></div>
+        </div>
+        <div style="font-size:11px;color:var(--muted2);margin-bottom:4px">${r.note}</div>
+        <div style="font-size:10px;font-family:var(--mono);color:${r.risk.startsWith('Élevé')?'var(--red)':r.risk.startsWith('Modéré')?'var(--orange)':'var(--green)'}">⚠ Risque: ${r.risk}</div>
+      </div>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════════════════
+// VERTEX
+// ══════════════════════════════════════════════════
+function renderVertexPhases(){
+  const phases=[
+    {n:'Phase 1',t:'API Google Ads → BigQuery',tl:'Semaine 1-2',c:'var(--blue)',tasks:['Créer projet Google Cloud: cossette-sem-2026','Activer APIs: Google Ads + BigQuery + Vertex AI','Installer: pip install google-ads google-cloud-bigquery','Configurer google-ads.yaml avec credentials OAuth2 MCC','Script Python : export quotidien des métriques → BigQuery','Créer datasets BigQuery: saq_ads, teleqc_ads, generic_ads','Tester sur compte sandbox avant les comptes clients']},
+    {n:'Phase 2',t:'Vertex AI — Détection anomalies ML',tl:'Semaine 3-4',c:'var(--purple)',tasks:['Modèle time-series forecasting sur 90j historique BigQuery','Vertex AI AutoML Tabular: prédiction CPA/ROAS J+7','Pipeline: Cloud Scheduler → Vertex Pipeline → BigQuery → Alertes','Seuils dynamiques ML (plus précis que les seuils fixes des scripts)','Rapport Google Sheets automatique via Apps Script','Test A/B: alertes statiques vs alertes ML sur 30 jours']},
+    {n:'Phase 3',t:'Actions automatiques via API Google Ads',tl:'Mois 2',c:'var(--orange)',tasks:['Mode recommandation d\'abord — validation humaine obligatoire','Ajustements tROAS/tCPA: Vertex propose → Tommy valide → API applique','Pause automatique campagnes en dépassement critique (>100%)','Ajout négatifs (Search Terms Miner) → API Google Ads directement','Règle absolue: aucun changement > 15% sans validation humaine','Log TOUTES les modifications avec justification dans BigQuery (auditabilité)']},
+    {n:'Phase 4',t:'Reporting client automatisé',tl:'Mois 3',c:'var(--green)',tasks:['Looker Studio connecté à BigQuery: dashboard client temps réel','Rapport mensuel PDF généré automatiquement depuis template Bloc 5','Alertes Slack: webhook + Cloud Function pour événements critiques','QBR trimestriel: données pré-remplies depuis BigQuery','Rapport de valeur: économies temps + budget réalisées par les automations','Documentation onboarding nouveaux comptes clients Cossette']},
+  ];
+  document.getElementById('vertex-phases').innerHTML=phases.map(p=>`
+    <div style="display:flex;gap:10px;margin-bottom:10px">
+      <div style="min-width:80px;background:rgba(0,0,0,.3);border:1px solid ${p.c}44;border-radius:4px;padding:8px;text-align:center;flex-shrink:0">
+        <div style="font-family:var(--mono);font-size:8px;color:${p.c};text-transform:uppercase;letter-spacing:.1em">${p.n}</div>
+        <div style="font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:3px">${p.tl}</div>
+      </div>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:600;margin-bottom:6px;color:${p.c}">${p.t}</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:3px">
+          ${p.tasks.map(t=>`<li style="font-size:11px;color:var(--muted2);display:flex;gap:5px"><span style="color:${p.c};flex-shrink:0">→</span>${t}</li>`).join('')}
+        </ul>
+      </div>
+    </div>`).join('');
+
+  document.getElementById('vertex-code').textContent=`#!/usr/bin/env python3
+# ═══════════════════════════════════════════════════════
+# GOOGLE ADS API → BIGQUERY EXPORT
+# Tommy Dubé · Cossette Media · Phase 1
+# Prérequis: pip install google-ads google-cloud-bigquery
+# ═══════════════════════════════════════════════════════
+
+from datetime import date, timedelta
+from google.ads.googleads.client import GoogleAdsClient
+from google.cloud import bigquery
+
+CONFIG = {
+    "GOOGLE_ADS_YAML": "google-ads.yaml",
+    "GCP_PROJECT":     "cossette-sem-2026",
+    "BQ_DATASET":      "google_ads_data",
+    "BQ_TABLE":        "campaigns_daily",
+    "CUSTOMER_IDS": [
+        "XXXXXXXXX",   # SAQ — remplacer par le vrai Customer ID
+        "YYYYYYYYY",   # Télé-Québec — remplacer
+    ],
+    "LOOKBACK_DAYS": 7,
+}
+
+def get_campaigns(ads_client, customer_id, start, end):
+    svc = ads_client.get_service("GoogleAdsService")
+    query = f"""
+        SELECT
+            campaign.id, campaign.name, campaign.status,
+            campaign.advertising_channel_type,
+            campaign.bidding_strategy_type,
+            metrics.impressions, metrics.clicks,
+            metrics.cost_micros, metrics.conversions,
+            metrics.conversions_value,
+            metrics.search_impression_share,
+            segments.date
+        FROM campaign
+        WHERE segments.date BETWEEN '{start}' AND '{end}'
+          AND campaign.status != 'REMOVED'
+        ORDER BY segments.date DESC, metrics.cost_micros DESC
+    """
+    rows = []
+    for batch in svc.search_stream(customer_id=str(customer_id), query=query):
+        for row in batch.results:
+            rows.append({
+                "date":             str(row.segments.date),
+                "customer_id":      str(customer_id),
+                "campaign_id":      str(row.campaign.id),
+                "campaign_name":    row.campaign.name,
+                "status":           row.campaign.status.name,
+                "channel_type":     row.campaign.advertising_channel_type.name,
+                "bidding_strategy": row.campaign.bidding_strategy_type.name,
+                "impressions":      row.metrics.impressions,
+                "clicks":           row.metrics.clicks,
+                "cost":             row.metrics.cost_micros / 1_000_000,
+                "conversions":      row.metrics.conversions,
+                "conv_value":       row.metrics.conversions_value,
+                "imp_share":        row.metrics.search_impression_share or 0,
+            })
+    return rows
+
+def upload_bq(bq_client, rows, table_id):
+    if not rows:
+        print(f"  Aucune donnée pour {table_id}")
+        return
+    errors = bq_client.insert_rows_json(table_id, rows)
+    if errors:
+        print(f"  Erreurs BQ: {errors}")
+    else:
+        print(f"  {len(rows)} lignes → {table_id}")
+
+def main():
+    print("=== EXPORT GOOGLE ADS → BIGQUERY ===")
+    ads = GoogleAdsClient.load_from_storage(CONFIG["GOOGLE_ADS_YAML"])
+    bq  = bigquery.Client(project=CONFIG["GCP_PROJECT"])
+    end   = date.today() - timedelta(days=1)
+    start = end - timedelta(days=CONFIG["LOOKBACK_DAYS"])
+    tbl   = f"{CONFIG['GCP_PROJECT']}.{CONFIG['BQ_DATASET']}.{CONFIG['BQ_TABLE']}"
+
+    for cid in CONFIG["CUSTOMER_IDS"]:
+        print(f"\\nCompte: {cid}")
+        try:
+            rows = get_campaigns(ads, cid, start.strftime("%Y-%m-%d"), end.strftime("%Y-%m-%d"))
+            print(f"  {len(rows)} lignes récupérées")
+            upload_bq(bq, rows, tbl)
+        except Exception as e:
+            print(f"  Erreur: {e}")
+    print("\\n=== TERMINÉ ===")
+
+if __name__ == "__main__":
+    main()
+
+# PROCHAINES ÉTAPES:
+# 1. gcloud projects create cossette-sem-2026
+# 2. gcloud services enable googleads.googleapis.com bigquery.googleapis.com vertexai.googleapis.com
+# 3. bq mk --dataset cossette-sem-2026:google_ads_data
+# 4. Configurer google-ads.yaml avec credentials OAuth2
+# 5. python export_bq.py   (tester)
+# 6. Déployer sur Cloud Run + Cloud Scheduler (quotidien 3h00)`;
+}
+
+document.getElementById('btn-copy-vertex').addEventListener('click', function(){
+  navigator.clipboard.writeText(document.getElementById('vertex-code').textContent).then(()=>{
+    this.textContent='✓ Copié!';
+    setTimeout(()=>this.textContent='📋 Copier',2000);
+  });
+});
+
+// ══════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════
+(function init(){
+  // Show only step 1
+  document.querySelectorAll('.csv-step').forEach((el,i)=>{ el.style.display=i===0?'block':'none'; });
+  // Init script panel
+  renderScriptPanel('budget');
+  renderRules();
+  renderVertexPhases();
+  updateSidebar('saq');
+  renderCampaigns('saq');
+  // p-account change
+  document.getElementById('p-account').addEventListener('change', function(){
+    CURR=this.value;
+    applyClientToForm(CURR);
+    renderCampaigns(CURR);
+    document.querySelectorAll('[data-client]').forEach(i=>i.classList.toggle('active',i.dataset.client===CURR));
+    updateSidebar(CURR);
+  });
+})();
+</script>
+</body>
+</html>
