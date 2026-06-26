@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -6,10 +7,17 @@
 <title>SEM Command Center — Cossette Media</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600;700&display=swap');
-:root{--bg:#0a0a0a;--surf:#111;--surf2:#1a1a1a;--surf3:#222;--bord:#2a2a2a;--bord2:#333;--text:#f0f0f0;--muted:#666;--muted2:#888;--accent:#e8ff47;--accent2:#b8cc2a;--blue:#4da6ff;--green:#47ff8a;--red:#ff4747;--orange:#ff8c47;--purple:#a47fff;--mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;--disp:'Syne',sans-serif;}
+:root{
+  --bg:#0a0a0a;--surf:#111;--surf2:#1a1a1a;--surf3:#222;
+  --bord:#2a2a2a;--bord2:#333;--text:#f0f0f0;--muted:#666;--muted2:#888;
+  --accent:#e8ff47;--accent2:#b8cc2a;
+  --blue:#4da6ff;--green:#47ff8a;--red:#ff4747;--orange:#ff8c47;--purple:#a47fff;
+  --mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;--disp:'Syne',sans-serif;
+}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:13px;min-height:100vh;}
-.site-header{background:var(--surf);border-bottom:1px solid var(--bord);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:52px;position:sticky;top:0;z-index:50;}
+
+.site-header{background:var(--surf);border-bottom:1px solid var(--bord);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:52px;position:sticky;top:0;z-index:100;}
 .logo{display:flex;align-items:center;gap:10px;}
 .logo-mark{width:26px;height:26px;background:var(--accent);border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-size:13px;font-weight:800;color:var(--bg);}
 .logo-text{font-family:var(--disp);font-size:13px;font-weight:700;}
@@ -17,38 +25,47 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:13
 .hdr-meta{font-family:var(--mono);font-size:9px;color:var(--muted);}
 .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);margin-right:5px;animation:pulse 2s infinite;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
 .main-nav{background:var(--surf);border-bottom:1px solid var(--bord);padding:0 24px;display:flex;gap:2px;overflow-x:auto;}
 .nav-tab{display:flex;align-items:center;gap:6px;padding:0 14px;height:42px;background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:color .15s,border-color .15s;}
 .nav-tab:hover{color:var(--text);}
 .nav-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+
 .app-shell{display:flex;height:calc(100vh - 94px);}
 .sidebar{width:240px;min-width:240px;background:var(--surf);border-right:1px solid var(--bord);overflow-y:auto;padding:16px 0;}
 .main-content{flex:1;overflow-y:auto;padding:20px 24px;}
+
 .sb-label{font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);padding:0 16px 6px;display:block;}
 .sb-item{display:flex;align-items:center;gap:9px;padding:7px 16px;cursor:pointer;transition:background .12s;border-left:2px solid transparent;color:var(--muted2);font-size:12px;}
 .sb-item:hover{background:var(--surf2);color:var(--text);}
 .sb-item.active{background:var(--surf2);border-left-color:var(--accent);color:var(--accent);}
 .sb-badge{margin-left:auto;background:var(--surf3);border:1px solid var(--bord2);border-radius:3px;font-family:var(--mono);font-size:9px;color:var(--muted);padding:1px 5px;}
 .sb-div{height:1px;background:var(--bord);margin:8px 16px;}
+
 .panel{display:none;}.panel.active{display:block;animation:fi .18s ease;}
 @keyframes fi{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
+
 .sec-title{font-family:var(--disp);font-size:19px;font-weight:800;margin-bottom:3px;}
 .sec-sub{font-size:11px;color:var(--muted2);margin-bottom:16px;}
+
 .card{background:var(--surf);border:1px solid var(--bord);border-radius:6px;overflow:hidden;margin-bottom:10px;}
 .card-hdr{padding:10px 14px;border-bottom:1px solid var(--bord);display:flex;align-items:center;justify-content:space-between;background:var(--surf2);}
 .card-title{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted2);display:flex;align-items:center;gap:7px;}
 .card-body{padding:14px;}
+
 .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:9px;margin-bottom:10px;}
 .fg label{display:block;font-family:var(--mono);font-size:9px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
 .fc{width:100%;background:var(--surf2);border:1px solid var(--bord2);border-radius:4px;color:var(--text);font-family:var(--mono);font-size:11px;padding:6px 9px;outline:none;transition:border-color .15s;}
 .fc:focus{border-color:var(--accent);}
 select.fc option{background:var(--surf2);}
 textarea.fc{resize:vertical;min-height:75px;line-height:1.6;}
+
 .btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border:none;border-radius:4px;font-family:var(--sans);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap;}
 .btn-p{background:var(--accent);color:var(--bg);}.btn-p:hover{background:var(--accent2);}
 .btn-s{background:var(--surf2);color:var(--text);border:1px solid var(--bord2);}.btn-s:hover{background:var(--surf3);}
 .btn-sm{padding:4px 10px;font-size:11px;}
 .btn-row{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-top:10px;}
+
 .tag{display:inline-block;padding:2px 7px;border-radius:3px;font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;}
 .t-fr{background:rgba(77,166,255,.15);color:var(--blue);border:1px solid rgba(77,166,255,.3);}
 .t-en{background:rgba(71,255,138,.15);color:var(--green);border:1px solid rgba(71,255,138,.3);}
@@ -57,23 +74,30 @@ textarea.fc{resize:vertical;min-height:75px;line-height:1.6;}
 .t-pm{background:rgba(232,255,71,.15);color:var(--accent);border:1px solid rgba(232,255,71,.3);}
 .t-di{background:rgba(255,71,71,.15);color:var(--red);border:1px solid rgba(255,71,71,.3);}
 .t-gy{background:var(--surf3);color:var(--muted2);border:1px solid var(--bord2);}
+
 .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:14px;}
 .kpi-c{background:var(--surf);border:1px solid var(--bord);border-radius:6px;padding:12px;text-align:center;}
 .kpi-l{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px;}
 .kpi-v{font-family:var(--disp);font-size:20px;font-weight:800;}
 .kv-a{color:var(--accent);}.kv-g{color:var(--green);}.kv-r{color:var(--red);}
 .kpi-sub{font-size:10px;color:var(--muted);margin-top:2px;}
+
 .dt{width:100%;border-collapse:collapse;font-size:11px;}
 .dt th{background:var(--surf2);font-family:var(--mono);font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding:7px 9px;text-align:left;border-bottom:1px solid var(--bord);white-space:nowrap;}
 .dt td{padding:7px 9px;border-bottom:1px solid var(--bord);vertical-align:middle;line-height:1.4;}
 .dt tr:last-child td{border-bottom:none;}
 .dt tr:hover td{background:var(--surf2);}
 .mc{font-family:var(--mono);font-size:10px;color:var(--muted2);}
-.rw-w td{background:rgba(255,140,71,.04);}
+.rw-a{} .rw-w td{background:rgba(255,140,71,.04);} .rw-d td{background:rgba(255,71,71,.05);}
+
 .code-blk{background:#050505;border:1px solid var(--bord);border-radius:5px;padding:14px;font-family:var(--mono);font-size:10.5px;line-height:1.75;overflow:auto;white-space:pre;color:#ccc;max-height:420px;}
+
 .alert{padding:9px 13px;border-radius:5px;font-size:12px;line-height:1.5;display:flex;gap:7px;align-items:flex-start;margin-bottom:8px;}
 .al-w{background:rgba(255,140,71,.1);border:1px solid rgba(255,140,71,.3);color:var(--orange);}
+.al-d{background:rgba(255,71,71,.1);border:1px solid rgba(255,71,71,.3);color:var(--red);}
+.al-s{background:rgba(71,255,138,.08);border:1px solid rgba(71,255,138,.25);color:var(--green);}
 .al-i{background:rgba(77,166,255,.08);border:1px solid rgba(77,166,255,.25);color:var(--blue);}
+
 .steps{display:flex;margin-bottom:16px;}
 .step{flex:1;padding:9px 12px;background:var(--surf2);border:1px solid var(--bord);border-right:none;display:flex;flex-direction:column;gap:2px;cursor:pointer;}
 .step:first-child{border-radius:4px 0 0 4px;}.step:last-child{border-radius:0 4px 4px 0;border-right:1px solid var(--bord);}
@@ -82,13 +106,17 @@ textarea.fc{resize:vertical;min-height:75px;line-height:1.6;}
 .step.active{background:rgba(232,255,71,.08);border-color:rgba(232,255,71,.3);}
 .step.active .step-n,.step.active .step-l{color:var(--accent);}
 .step.done .step-l{color:var(--green);}
+
 .itabs{display:flex;gap:3px;margin-bottom:12px;border-bottom:1px solid var(--bord);}
 .itab{padding:6px 13px;background:none;border:none;color:var(--muted);font-family:var(--mono);font-size:10px;letter-spacing:.05em;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s;}
 .itab:hover{color:var(--text);}.itab.active{color:var(--accent);border-bottom-color:var(--accent);}
+
 .out-area{background:#050505;border:1px solid var(--bord);border-radius:5px;padding:12px;font-family:var(--mono);font-size:10px;line-height:1.7;min-height:100px;color:var(--muted2);white-space:pre-wrap;word-break:break-all;max-height:480px;overflow-y:auto;}
+
 @media(max-width:700px){.app-shell{flex-direction:column;}.sidebar{width:100%;height:auto;border-right:none;border-bottom:1px solid var(--bord);}.form-grid{grid-template-columns:1fr;}}
 </style>
 </head>
+<body>
 <body>
 
 <header class="site-header">
@@ -105,7 +133,7 @@ textarea.fc{resize:vertical;min-height:75px;line-height:1.6;}
 <nav class="main-nav" id="main-nav">
   <button class="nav-tab active" data-tab="csv">📄 Générateur CSV Editor</button>
   <button class="nav-tab" data-tab="scripts">⚙️ Scripts Google Ads</button>
-  <button class="nav-tab" data-tab="dashboard">📊 Dashboard</button>
+  <button class="nav-tab" data-tab="dashboard">📊 Dashboard Monitoring</button>
   <button class="nav-tab" data-tab="rules">🤖 Règles automatisées</button>
   <button class="nav-tab" data-tab="vertex">🚀 Architecture Vertex</button>
 </nav>
@@ -115,9 +143,9 @@ textarea.fc{resize:vertical;min-height:75px;line-height:1.6;}
   <span class="sb-label">Comptes</span>
   <div class="sb-item active" data-client="saq"><span>🍷</span><span>SAQ</span><span class="sb-badge">E-com</span></div>
   <div class="sb-item" data-client="tv"><span>📺</span><span>Télé-Québec</span><span class="sb-badge">Média</span></div>
-  <div class="sb-item" data-client="generic"><span>🏢</span><span>Template</span><span class="sb-badge">TPL</span></div>
+  <div class="sb-item" data-client="generic"><span>🏢</span><span>Template générique</span><span class="sb-badge">TPL</span></div>
   <div class="sb-div"></div>
-  <span class="sb-label">État</span>
+  <span class="sb-label">État du compte</span>
   <div class="sb-item"><span>🟢</span><span>Campagnes actives</span><span class="sb-badge" id="sb-active">—</span></div>
   <div class="sb-item"><span>🔴</span><span>Alertes</span><span class="sb-badge" id="sb-alerts" style="color:var(--red)">0</span></div>
   <div class="sb-item"><span>💰</span><span>Budget/jour</span><span class="sb-badge" id="sb-budget">—</span></div>
@@ -125,10 +153,11 @@ textarea.fc{resize:vertical;min-height:75px;line-height:1.6;}
 
 <main class="main-content">
 
-<!-- PANEL CSV -->
+<!-- ══ PANEL CSV ══════════════════════════════ -->
 <div class="panel active" id="panel-csv">
   <div class="sec-title">Générateur CSV — Google Ads Editor</div>
   <div class="sec-sub" id="csv-sub">SAQ · Structure opérationnelle · Prêt à importer</div>
+
   <div class="steps" id="csv-steps">
     <div class="step active" data-step="1"><span class="step-n">01</span><span class="step-l">Paramètres</span></div>
     <div class="step" data-step="2"><span class="step-n">02</span><span class="step-l">Campagnes</span></div>
@@ -136,14 +165,29 @@ textarea.fc{resize:vertical;min-height:75px;line-height:1.6;}
     <div class="step" data-step="4"><span class="step-n">04</span><span class="step-l">Annonces RSA</span></div>
     <div class="step" data-step="5"><span class="step-n">05</span><span class="step-l">Export CSV</span></div>
   </div>
+
+  <!-- Step 1 -->
   <div id="s1" class="csv-step">
     <div class="card">
-      <div class="card-hdr"><div class="card-title">⚙️ Paramètres</div></div>
+      <div class="card-hdr"><div class="card-title">⚙️ Paramètres du compte</div></div>
       <div class="card-body">
         <div class="form-grid">
-          <div class="fg"><label>Compte</label><select class="fc" id="p-account"><option value="saq">SAQ</option><option value="tv">Télé-Québec</option><option value="generic">Template</option></select></div>
+          <div class="fg"><label>Compte cible</label>
+            <select class="fc" id="p-account">
+              <option value="saq">SAQ — E-commerce</option>
+              <option value="tv">Télé-Québec — Média</option>
+              <option value="generic">Template générique</option>
+            </select>
+          </div>
           <div class="fg"><label>URL de base</label><input type="text" class="fc" id="p-url" value="https://www.saq.com"></div>
-          <div class="fg"><label>KPI principal</label><select class="fc" id="p-kpi"><option value="roas">ROAS</option><option value="cpa">CPA</option><option value="cpm">CPM</option></select></div>
+          <div class="fg"><label>KPI principal</label>
+            <select class="fc" id="p-kpi">
+              <option value="roas">ROAS — E-commerce</option>
+              <option value="cpa">CPA — Acquisition</option>
+              <option value="cpl">CPL — Leads B2B</option>
+              <option value="cpm">CPM — Notoriété</option>
+            </select>
+          </div>
           <div class="fg"><label>Budget total/jour ($CAD)</label><input type="number" class="fc" id="p-budget" value="1500"></div>
           <div class="fg"><label>Cible ROAS (%)</label><input type="number" class="fc" id="p-roas-val" value="400"></div>
           <div class="fg"><label>Cible CPA ($)</label><input type="number" class="fc" id="p-cpa-val" value="45"></div>
@@ -154,36 +198,44 @@ textarea.fc{resize:vertical;min-height:75px;line-height:1.6;}
       </div>
     </div>
   </div>
+
+  <!-- Step 2 -->
   <div id="s2" class="csv-step" style="display:none">
     <div class="card">
-      <div class="card-hdr"><div class="card-title">📋 Campagnes</div></div>
+      <div class="card-hdr"><div class="card-title">📋 Structure des campagnes</div></div>
       <div class="card-body" style="padding:0;overflow-x:auto">
-        <table class="dt"><thead><tr><th>Campagne</th><th>Type</th><th>Lang.</th><th>Budget/j</th><th>Stratégie</th><th>Cible</th><th>Note</th></tr></thead><tbody id="camp-tbody"></tbody></table>
+        <table class="dt"><thead><tr>
+          <th>Campagne</th><th>Type</th><th>Lang.</th><th>Budget/j</th><th>Stratégie</th><th>Cible</th><th>Note</th>
+        </tr></thead><tbody id="camp-tbody"></tbody></table>
       </div>
     </div>
     <div class="btn-row">
       <button class="btn btn-s" id="btn-back1">← Retour</button>
-      <button class="btn btn-p" id="btn-step3">Mots-clés →</button>
+      <button class="btn btn-p" id="btn-step3">Configurer les mots-clés →</button>
     </div>
   </div>
+
+  <!-- Step 3 -->
   <div id="s3" class="csv-step" style="display:none">
     <div class="card">
-      <div class="card-hdr"><div class="card-title">🔑 Mots-clés</div></div>
+      <div class="card-hdr"><div class="card-title">🔑 Mots-clés par groupe d'annonces</div></div>
       <div class="card-body">
-        <div class="alert al-i">ℹ️ Pré-générés selon le compte. Modifier avant export.</div>
+        <div class="alert al-i">ℹ️ Mots-clés pré-générés selon le compte sélectionné. Modifier directement avant export.</div>
         <div id="kw-editor"></div>
       </div>
     </div>
     <div class="btn-row">
       <button class="btn btn-s" id="btn-back2">← Retour</button>
-      <button class="btn btn-p" id="btn-step4">Annonces →</button>
+      <button class="btn btn-p" id="btn-step4">Configurer les annonces →</button>
     </div>
   </div>
+
+  <!-- Step 4 -->
   <div id="s4" class="csv-step" style="display:none">
     <div class="card">
       <div class="card-hdr"><div class="card-title">📝 Annonces RSA</div></div>
       <div class="card-body">
-        <div class="alert al-w">⚠️ Headlines ≤ 30 car. · Descriptions ≤ 90 car.</div>
+        <div class="alert al-w">⚠️ Headlines ≤ 30 car. · Descriptions ≤ 90 car. · Compteur en temps réel</div>
         <div id="rsa-editor"></div>
       </div>
     </div>
@@ -192,11 +244,13 @@ textarea.fc{resize:vertical;min-height:75px;line-height:1.6;}
       <button class="btn btn-p" id="btn-step5">Générer le CSV →</button>
     </div>
   </div>
+
+  <!-- Step 5 -->
   <div id="s5" class="csv-step" style="display:none">
     <div class="kpi-grid" id="csv-kpis"></div>
     <div class="card">
       <div class="card-hdr">
-        <div class="card-title">📄 CSV prêt</div>
+        <div class="card-title">📄 CSV prêt — Copier ou télécharger</div>
         <div style="display:flex;gap:5px">
           <button class="btn btn-sm btn-s" id="btn-copy-csv">📋 Copier</button>
           <button class="btn btn-sm btn-p" id="btn-dl-csv">⬇ Télécharger .csv</button>
@@ -204,7 +258,19 @@ textarea.fc{resize:vertical;min-height:75px;line-height:1.6;}
       </div>
       <div class="card-body" style="padding:0"><div class="out-area" id="csv-out"></div></div>
     </div>
-    <div class="alert al-w" style="margin-top:10px">⚠️ Toutes les campagnes sont en <strong>PAUSED</strong>. Activer manuellement après vérification dans Editor.</div>
+    <div class="card">
+      <div class="card-hdr"><div class="card-title">📋 Guide d'import — Google Ads Editor</div></div>
+      <div class="card-body">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px">
+          <div style="background:var(--surf2);border:1px solid var(--bord);border-radius:4px;padding:10px"><div style="font-family:var(--mono);font-size:9px;color:var(--accent);margin-bottom:3px">ÉTAPE 1</div><div style="font-size:11px;font-weight:600;margin-bottom:2px">Ouvrir Editor</div><div style="font-size:10px;color:var(--muted2)">Google Ads Editor → sélectionner le compte</div></div>
+          <div style="background:var(--surf2);border:1px solid var(--bord);border-radius:4px;padding:10px"><div style="font-family:var(--mono);font-size:9px;color:var(--accent);margin-bottom:3px">ÉTAPE 2</div><div style="font-size:11px;font-weight:600;margin-bottom:2px">Télécharger</div><div style="font-size:10px;color:var(--muted2)">Account → Download latest changes</div></div>
+          <div style="background:var(--surf2);border:1px solid var(--bord);border-radius:4px;padding:10px"><div style="font-family:var(--mono);font-size:9px;color:var(--accent);margin-bottom:3px">ÉTAPE 3</div><div style="font-size:11px;font-weight:600;margin-bottom:2px">Importer</div><div style="font-size:10px;color:var(--muted2)">File → Import → From file → .csv</div></div>
+          <div style="background:var(--surf2);border:1px solid var(--bord);border-radius:4px;padding:10px"><div style="font-family:var(--mono);font-size:9px;color:var(--accent);margin-bottom:3px">ÉTAPE 4</div><div style="font-size:11px;font-weight:600;margin-bottom:2px">Valider</div><div style="font-size:10px;color:var(--muted2)">Process → Check changes → Corriger erreurs</div></div>
+          <div style="background:var(--surf2);border:1px solid var(--bord);border-radius:4px;padding:10px"><div style="font-family:var(--mono);font-size:9px;color:var(--accent);margin-bottom:3px">ÉTAPE 5</div><div style="font-size:11px;font-weight:600;margin-bottom:2px">Publier</div><div style="font-size:10px;color:var(--muted2)">Keep changes → Post to Google Ads</div></div>
+        </div>
+        <div class="alert al-w" style="margin-top:10px">⚠️ Toutes les campagnes sont générées en statut <strong>PAUSED</strong>. Activer manuellement après vérification.</div>
+      </div>
+    </div>
     <div class="btn-row">
       <button class="btn btn-s" id="btn-back4">← Retour</button>
       <button class="btn btn-p" id="btn-restart">🔄 Recommencer</button>
@@ -212,10 +278,11 @@ textarea.fc{resize:vertical;min-height:75px;line-height:1.6;}
   </div>
 </div>
 
-<!-- PANEL SCRIPTS -->
+<!-- ══ PANEL SCRIPTS ══════════════════════════ -->
 <div class="panel" id="panel-scripts">
   <div class="sec-title">Scripts Google Ads</div>
   <div class="sec-sub">5 scripts · 3 niveaux · Tools → Bulk Actions → Scripts</div>
+
   <div class="card" style="margin-bottom:10px;border-left:3px solid var(--accent)">
     <div class="card-hdr" id="guide-hdr" style="cursor:pointer">
       <div class="card-title">📋 Comment intégrer — Guide pas à pas</div>
@@ -225,14 +292,15 @@ textarea.fc{resize:vertical;min-height:75px;line-height:1.6;}
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;margin-bottom:10px">
         <div style="background:var(--surf2);border:1px solid var(--bord);border-radius:4px;padding:10px"><div style="font-family:var(--mono);font-size:9px;color:var(--accent);margin-bottom:3px">ÉTAPE 1</div><div style="font-size:11px;font-weight:600">Ouvrir Google Ads</div><div style="font-size:10px;color:var(--muted2)">Tools → Bulk Actions → Scripts → + New script</div></div>
         <div style="background:var(--surf2);border:1px solid var(--bord);border-radius:4px;padding:10px"><div style="font-family:var(--mono);font-size:9px;color:var(--accent);margin-bottom:3px">ÉTAPE 2</div><div style="font-size:11px;font-weight:600">Configurer ici</div><div style="font-size:10px;color:var(--muted2)">Choisir le script → remplir les champs → niveau → Générer</div></div>
-        <div style="background:var(--surf2);border:1px solid var(--bord);border-radius:4px;padding:10px"><div style="font-family:var(--mono);font-size:9px;color:var(--accent);margin-bottom:3px">ÉTAPE 3</div><div style="font-size:11px;font-weight:600">Copier + Coller</div><div style="font-size:10px;color:var(--muted2)">Bouton Copier → éditeur Google Ads → Authorize</div></div>
-        <div style="background:var(--surf2);border:1px solid rgba(255,140,71,.4);border-radius:4px;padding:10px"><div style="font-family:var(--mono);font-size:9px;color:var(--orange);margin-bottom:3px">ÉTAPE 4 — CRITIQUE</div><div style="font-size:11px;font-weight:600">Preview TOUJOURS</div><div style="font-size:10px;color:var(--muted2)">Cliquer Preview — jamais Run directement.</div></div>
+        <div style="background:var(--surf2);border:1px solid var(--bord);border-radius:4px;padding:10px"><div style="font-family:var(--mono);font-size:9px;color:var(--accent);margin-bottom:3px">ÉTAPE 3</div><div style="font-size:11px;font-weight:600">Copier + Coller</div><div style="font-size:10px;color:var(--muted2)">Bouton Copier → coller dans Google Ads → Authorize</div></div>
+        <div style="background:var(--surf2);border:1px solid rgba(255,140,71,.4);border-radius:4px;padding:10px"><div style="font-family:var(--mono);font-size:9px;color:var(--orange);margin-bottom:3px">ÉTAPE 4 — CRITIQUE</div><div style="font-size:11px;font-weight:600">Preview TOUJOURS</div><div style="font-size:10px;color:var(--muted2)">Preview avant Run. Zéro erreur rouge = bon.</div></div>
         <div style="background:var(--surf2);border:1px solid var(--bord);border-radius:4px;padding:10px"><div style="font-family:var(--mono);font-size:9px;color:var(--accent);margin-bottom:3px">ÉTAPE 5</div><div style="font-size:11px;font-weight:600">Save + Schedule</div><div style="font-size:10px;color:var(--muted2)">Save → Schedule → fréquence recommandée</div></div>
         <div style="background:var(--surf2);border:1px solid rgba(71,255,138,.3);border-radius:4px;padding:10px"><div style="font-family:var(--mono);font-size:9px;color:var(--green);margin-bottom:3px">RÉSULTAT</div><div style="font-size:11px;font-weight:600">Emails automatiques</div><div style="font-size:10px;color:var(--muted2)">Emails + logs Sheet. Niv.2+ agit dans le compte.</div></div>
       </div>
       <div style="background:rgba(255,140,71,.08);border:1px solid rgba(255,140,71,.25);border-radius:4px;padding:9px;font-size:11px;color:var(--orange)">⚠️ Ordre : Jour 1 → Budget Monitor · Jour 2 → Anomaly · Sem.2 → Search Terms + Quality + PMax. Commencer en Niv.1.</div>
     </div>
   </div>
+
   <div class="card" style="margin-bottom:10px">
     <div class="card-body" style="padding:10px 14px">
       <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
@@ -244,6 +312,7 @@ textarea.fc{resize:vertical;min-height:75px;line-height:1.6;}
       </div>
     </div>
   </div>
+
   <div class="itabs" id="script-tabs">
     <button class="itab active" data-script="budget">💰 Budget Monitor</button>
     <button class="itab" data-script="anomaly">🔔 Anomaly Detector</button>
@@ -253,51 +322,50 @@ textarea.fc{resize:vertical;min-height:75px;line-height:1.6;}
   </div>
   <div id="scripts-content"></div>
 </div>
-
-<!-- PANEL DASHBOARD -->
+<!-- ══ PANEL DASHBOARD ════════════════════════ -->
 <div class="panel" id="panel-dashboard">
   <div class="sec-title">Dashboard Monitoring</div>
-  <div class="sec-sub">Simulation temps réel</div>
+  <div class="sec-sub">Simulation temps réel · Connecter à l'API Google Ads pour données live</div>
   <div class="kpi-grid">
-    <div class="kpi-c"><div class="kpi-l">Dépense mois</div><div class="kpi-v kv-a" id="d-spend">—</div></div>
-    <div class="kpi-c"><div class="kpi-l">CPA moyen</div><div class="kpi-v kv-g" id="d-cpa">—</div></div>
-    <div class="kpi-c"><div class="kpi-l">ROAS</div><div class="kpi-v kv-g" id="d-roas">—</div></div>
-    <div class="kpi-c"><div class="kpi-l">IS Brand</div><div class="kpi-v kv-r" id="d-is">—</div></div>
-    <div class="kpi-c"><div class="kpi-l">Alertes</div><div class="kpi-v kv-r" id="d-alerts">0</div></div>
-    <div class="kpi-c"><div class="kpi-l">Apprentissage</div><div class="kpi-v kv-a" id="d-learn">—</div></div>
+    <div class="kpi-c"><div class="kpi-l">Dépense mois</div><div class="kpi-v kv-a" id="d-spend">—</div><div class="kpi-sub">vs budget</div></div>
+    <div class="kpi-c"><div class="kpi-l">CPA moyen</div><div class="kpi-v kv-g" id="d-cpa">—</div><div class="kpi-sub">cible $45</div></div>
+    <div class="kpi-c"><div class="kpi-l">ROAS compte</div><div class="kpi-v kv-g" id="d-roas">—</div><div class="kpi-sub">cible 400%</div></div>
+    <div class="kpi-c"><div class="kpi-l">IS Brand</div><div class="kpi-v kv-r" id="d-is">—</div><div class="kpi-sub">cible ≥ 90%</div></div>
+    <div class="kpi-c"><div class="kpi-l">Alertes actives</div><div class="kpi-v kv-r" id="d-alerts">0</div><div class="kpi-sub">action requise</div></div>
+    <div class="kpi-c"><div class="kpi-l">En apprentissage</div><div class="kpi-v kv-a" id="d-learn">—</div><div class="kpi-sub">PMax + SB</div></div>
   </div>
   <div class="card">
     <div class="card-hdr">
       <div class="card-title">🚨 Centre d'alertes</div>
       <div style="display:flex;gap:5px">
-        <button class="btn btn-sm btn-s" id="btn-sim">🔄 Simuler</button>
-        <button class="btn btn-sm btn-s" id="btn-clear">✓ Acquitter</button>
+        <button class="btn btn-sm btn-s" id="btn-sim">🔄 Simuler alertes</button>
+        <button class="btn btn-sm btn-s" id="btn-clear">✓ Acquitter tout</button>
       </div>
     </div>
-    <div style="overflow-x:auto"><table class="dt"><thead><tr><th>Sév.</th><th>Campagne</th><th>Métrique</th><th>Valeur</th><th>Seuil</th><th>Action</th><th>Il y a</th></tr></thead><tbody id="alerts-tbody"><tr><td colspan="7" style="text-align:center;padding:18px;color:var(--muted)">Cliquer Simuler</td></tr></tbody></table></div>
+    <div style="overflow-x:auto"><table class="dt"><thead><tr><th>Sév.</th><th>Campagne</th><th>Métrique</th><th>Valeur</th><th>Seuil</th><th>Action</th><th>Il y a</th></tr></thead><tbody id="alerts-tbody"><tr><td colspan="7" style="text-align:center;padding:18px;color:var(--muted)">Cliquer "Simuler alertes"</td></tr></tbody></table></div>
   </div>
   <div class="card">
     <div class="card-hdr"><div class="card-title">📈 Performance hebdomadaire</div></div>
-    <div style="overflow-x:auto"><table class="dt"><thead><tr><th>Campagne</th><th>Type</th><th>Dépense 7j</th><th>Conv.</th><th>CPA</th><th>ROAS</th><th>IS</th><th>Statut</th></tr></thead><tbody id="perf-tbody"><tr><td colspan="8" style="text-align:center;padding:18px;color:var(--muted)">Simuler les alertes</td></tr></tbody></table></div>
+    <div style="overflow-x:auto"><table class="dt"><thead><tr><th>Campagne</th><th>Type</th><th>Dépense 7j</th><th>Conv.</th><th>CPA</th><th>ROAS</th><th>IS</th><th>Statut</th></tr></thead><tbody id="perf-tbody"><tr><td colspan="8" style="text-align:center;padding:18px;color:var(--muted)">Simuler les alertes pour voir les données</td></tr></tbody></table></div>
   </div>
 </div>
 
-<!-- PANEL RULES -->
+<!-- ══ PANEL RULES ════════════════════════════ -->
 <div class="panel" id="panel-rules">
-  <div class="sec-title">Règles automatisées</div>
-  <div class="sec-sub">Tools → Automated Rules · Aucun code requis</div>
-  <div class="alert al-i">ℹ️ Créer dans Google Ads. Copier les conditions et actions ci-dessous.</div>
+  <div class="sec-title">Règles automatisées Google Ads</div>
+  <div class="sec-sub">Règles natives · Tools → Automated Rules · Aucun code requis</div>
+  <div class="alert al-i">ℹ️ Créer ces règles directement dans Google Ads. Copier les conditions et actions ci-dessous.</div>
   <div id="rules-list"></div>
 </div>
 
-<!-- PANEL VERTEX -->
+<!-- ══ PANEL VERTEX ═══════════════════════════ -->
 <div class="panel" id="panel-vertex">
   <div class="sec-title">Architecture Vertex AI — Phase 2</div>
-  <div class="sec-sub">Google Cloud · API Google Ads + Vertex AI + BigQuery</div>
+  <div class="sec-sub">Plan Google Cloud · API Google Ads + Vertex AI + BigQuery</div>
   <div id="vertex-phases"></div>
   <div class="card">
     <div class="card-hdr">
-      <div class="card-title">🐍 Code Python — Export API → BigQuery</div>
+      <div class="card-title">🐍 Code Python — Export API Google Ads → BigQuery</div>
       <button class="btn btn-sm btn-s" id="btn-copy-vertex">📋 Copier</button>
     </div>
     <div class="card-body" style="padding:0"><div class="code-blk" id="vertex-code"></div></div>
@@ -306,6 +374,8 @@ textarea.fc{resize:vertical;min-height:75px;line-height:1.6;}
 
 </main>
 </div>
+
+
 
 <script>
 
@@ -436,7 +506,7 @@ document.querySelector('.sidebar').addEventListener('click', function(e) {
   document.getElementById('csv-sub').textContent = CLIENTS[CURR].name + ' · Prêt à importer';
 });
 
-// ══ STEPS ════════════════════════════════════════
+// ══ CSV STEPS ════════════════════════════════════
 document.getElementById('csv-steps').addEventListener('click', function(e) {
   var s = e.target.closest('[data-step]');
   if (s) goStep(+s.dataset.step);
@@ -459,26 +529,6 @@ document.getElementById('script-tabs').addEventListener('click', function(e) {
   document.querySelectorAll('.itab').forEach(function(b) { b.classList.remove('active'); });
   btn.classList.add('active');
   renderScriptPanel(CURR_SCRIPT);
-
-
-// Build and copy button delegation
-document.addEventListener('click', function(e) {
-  var btn = e.target.closest('[data-action]');
-  if (!btn) return;
-  var action = btn.dataset.action;
-  if (action === 'build') {
-    buildScript(btn.dataset.type, btn.dataset.code);
-  } else if (action === 'copy') {
-    copyEl(btn.dataset.code, btn);
-  }
-});
-
-// Niveau script button delegation
-document.addEventListener('click', function(e) {
-  var btn = e.target.closest('[data-niv][data-type]');
-  if (!btn) return;
-  setNiveauScript(btn.dataset.type, +btn.dataset.niv);
-});
 });
 
 // ══ GUIDE ════════════════════════════════════════
@@ -507,23 +557,25 @@ document.getElementById('btn-copy-csv').addEventListener('click', function() {
 });
 document.getElementById('btn-dl-csv').addEventListener('click', function() {
   var text = document.getElementById('csv-out').textContent;
-  if (!text) { alert('Générer le CSV d\'abord (étape 5).'); return; }
+  if (!text) { alert('Générer le CSV d\'abord.'); return; }
   var blob = new Blob([text], { type: 'text/csv;charset=utf-8;' });
   var url = URL.createObjectURL(blob);
   var a = document.createElement('a');
-  a.href = url; a.download = CURR + '_google_ads_' + new Date().toISOString().slice(0,10) + '.csv';
-  a.click(); URL.revokeObjectURL(url);
+  a.href = url;
+  a.download = CURR + '_google_ads_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
 });
 
-// ══ DASHBOARD BUTTONS ════════════════════════════
+// ══ DASHBOARD ════════════════════════════════════
 document.getElementById('btn-sim').addEventListener('click', function() { simulateAlerts(); });
 document.getElementById('btn-clear').addEventListener('click', function() {
-  document.getElementById('alerts-tbody').innerHTML = '<tr><td colspan="7" style="text-align:center;padding:16px;color:var(--muted)">Toutes les alertes acquittées ✓</td></tr>';
+  document.getElementById('alerts-tbody').innerHTML = '<tr><td colspan="7" style="text-align:center;padding:16px;color:var(--muted)">Acquittées ✓</td></tr>';
   document.getElementById('d-alerts').textContent = '0';
   document.getElementById('sb-alerts').textContent = '0';
 });
 
-// ══ VERTEX COPY ══════════════════════════════════
+// ══ VERTEX ═══════════════════════════════════════
 document.getElementById('btn-copy-vertex').addEventListener('click', function() {
   var text = document.getElementById('vertex-code').textContent;
   var btn = this;
@@ -533,7 +585,7 @@ document.getElementById('btn-copy-vertex').addEventListener('click', function() 
   });
 });
 
-// ══ FUNCTIONS ════════════════════════════════════
+// ══ FONCTIONS UTILITAIRES ════════════════════════
 function applyClientToForm(id) {
   var c = CLIENTS[id];
   document.getElementById('p-account').value = id;
@@ -576,7 +628,7 @@ function renderCampaigns(id) {
   var c = CLIENTS[id] || CLIENTS.saq;
   document.getElementById('camp-tbody').innerHTML = c.campaigns.map(function(camp) {
     return '<tr class="' + (camp.fix ? 'rw-w' : '') + '">' +
-      '<td style="max-width:260px"><div style="font-size:11px;font-weight:500;margin-bottom:1px">' + camp.name + '</div>' +
+      '<td><div style="font-size:11px;font-weight:500">' + camp.name + '</div>' +
       (camp.fix ? '<div style="font-size:10px;color:var(--orange)">⚠ ' + camp.fix + '</div>' : '') + '</td>' +
       '<td><span class="tag ' + (TYPE_TAG[camp.type]||'t-gy') + '">' + camp.type + '</span></td>' +
       '<td><span class="tag ' + (LANG_TAG[camp.lang]||'t-gy') + '">' + camp.lang + '</span></td>' +
@@ -589,8 +641,8 @@ function renderCampaigns(id) {
 
 function renderKW() {
   var tpl = KW[CURR] || KW.generic;
-  document.getElementById('kw-editor').innerHTML = Object.entries(tpl).map(function(e) {
-    var grp = e[0], d = e[1];
+  document.getElementById('kw-editor').innerHTML = Object.entries(tpl).map(function(entry) {
+    var grp = entry[0], d = entry[1];
     return '<div style="margin-bottom:10px">' +
       '<div style="display:flex;align-items:center;gap:7px;margin-bottom:4px">' +
       '<span style="font-size:12px;font-weight:600">' + grp + '</span>' +
@@ -601,23 +653,22 @@ function renderKW() {
 
 function renderRSA() {
   var rsas = RSA[CURR] || RSA.generic;
-  document.getElementById('rsa-editor').innerHTML = rsas.map(function(rsa, i) {
+  document.getElementById('rsa-editor').innerHTML = rsas.map(function(rsa) {
     var hlines = rsa.h.map(function(h, j) {
       return '<div style="display:flex;align-items:center;gap:5px;margin-bottom:3px">' +
         '<span style="font-family:var(--mono);font-size:9px;color:var(--muted);min-width:20px">H' + (j+1) + '</span>' +
         '<input type="text" class="fc" value="' + h + '" maxlength="30" style="font-size:11px"></div>';
     }).join('');
     var dlines = rsa.d.map(function(d, j) {
-      return '<div style="display:flex;gap:5px;margin-bottom:3px;align-items:flex-start">' +
+      return '<div style="display:flex;gap:5px;margin-bottom:3px">' +
         '<span style="font-family:var(--mono);font-size:9px;color:var(--muted);min-width:20px;padding-top:7px">D' + (j+1) + '</span>' +
         '<textarea class="fc" maxlength="90" style="min-height:44px;font-size:11px">' + d + '</textarea></div>';
     }).join('');
     return '<div style="background:var(--surf2);border:1px solid var(--bord);border-radius:4px;padding:12px;margin-bottom:10px">' +
       '<div style="display:flex;align-items:center;gap:7px;margin-bottom:8px">' +
       '<span style="font-size:12px;font-weight:600">' + rsa.camp + '</span>' +
-      '<span class="tag ' + (rsa.lang==='FR'?'t-fr':'t-en') + '">' + rsa.lang + '</span></div>' +
-      '<div style="margin-bottom:8px"><div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;margin-bottom:4px">Headlines</div>' + hlines + '</div>' +
-      '<div><div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;margin-bottom:4px">Descriptions</div>' + dlines + '</div></div>';
+      '<span class="tag ' + (rsa.lang === 'FR' ? 't-fr' : 't-en') + '">' + rsa.lang + '</span></div>' +
+      '<div style="margin-bottom:8px">' + hlines + '</div><div>' + dlines + '</div></div>';
   }).join('');
 }
 
@@ -625,27 +676,34 @@ function buildCSV() {
   var c = CLIENTS[CURR];
   var url = document.getElementById('p-url').value;
   var tROAS = document.getElementById('p-roas-val').value;
-  var tCPA = document.getElementById('p-cpa-val').value;
-  var rows = [['Campaign','Ad Group','Keyword','Criterion Type','Ad type','Headline 1','Headline 2','Headline 3','Description 1','Description 2','Final URL','Campaign Type','Campaign Status','Budget','Budget type','Bid Strategy Type','Target ROAS (%)','Target CPA','Languages','Networks','Status'].join(',')];
+  var tCPA  = document.getElementById('p-cpa-val').value;
+  var rows  = [['Campaign','Campaign Type','Campaign Status','Budget','Budget type','Bid Strategy Type','Target ROAS (%)','Target CPA','Languages','Networks'].join(',')];
   c.campaigns.forEach(function(camp) {
-    var strat = camp.strategy.includes('Conversion Value') ? 'Target ROAS' : camp.strategy.includes('Impression Share') ? 'Target Impression Share' : camp.strategy.includes('Conversions') ? 'Target CPA' : camp.strategy;
+    var strat = camp.strategy.includes('Conversion Value') ? 'Target ROAS'
+              : camp.strategy.includes('Impression Share') ? 'Target Impression Share'
+              : camp.strategy.includes('Maximize Conversions') ? 'Target CPA'
+              : camp.strategy;
     var tr = strat === 'Target ROAS' ? tROAS : '';
-    var tc = strat === 'Target CPA' ? tCPA : '';
+    var tc = strat === 'Target CPA'  ? tCPA  : '';
     var lang = camp.lang === 'EN' ? 'English' : camp.lang === 'FR' ? 'French' : 'French;English';
     var nets = camp.type === 'Search' ? 'Google search' : camp.type === 'Shopping' ? 'Google search;Shopping' : 'All';
-    var ct = camp.type === 'Performance Max' ? 'Performance max' : camp.type;
-    rows.push(['"' + camp.name + '"','','','','','','','','','','',ct,'Paused',camp.budget,'Daily',strat,tr,tc,lang,nets,''].join(','));
+    var ct   = camp.type === 'Performance Max' ? 'Performance max' : camp.type;
+    rows.push(['"' + camp.name + '"', ct, 'Paused', camp.budget, 'Daily', strat, tr, tc, lang, nets].join(','));
   });
-  var csv = rows.join('\n');
-  document.getElementById('csv-out').textContent = csv;
+  document.getElementById('csv-out').textContent = rows.join('\n');
   document.getElementById('csv-kpis').innerHTML =
-    '<div class="kpi-c"><div class="kpi-l">Campagnes</div><div class="kpi-v kv-a">' + c.campaigns.length + '</div><div class="kpi-sub">toutes PAUSED</div></div>' +
+    '<div class="kpi-c"><div class="kpi-l">Campagnes</div><div class="kpi-v kv-a">' + c.campaigns.length + '</div><div class="kpi-sub">PAUSED</div></div>' +
     '<div class="kpi-c"><div class="kpi-l">Budget/j</div><div class="kpi-v kv-a">$' + c.campaigns.reduce(function(a,b){return a+(b.budget||0);},0).toLocaleString('fr-CA') + '</div><div class="kpi-sub">CAD</div></div>' +
-    '<div class="kpi-c"><div class="kpi-l">Lignes CSV</div><div class="kpi-v">' + rows.length + '</div><div class="kpi-sub">prêtes</div></div>';
+    '<div class="kpi-c"><div class="kpi-l">Lignes</div><div class="kpi-v">' + rows.length + '</div><div class="kpi-sub">CSV</div></div>';
 }
 
-// ══ SCRIPTS ══════════════════════════════════════
+// ══ SCRIPTS — 3 NIVEAUX ══════════════════════════
 var NIVEAUX = {budget:1, anomaly:1, searchterms:1, quality:1, pmax:1};
+
+function gv(id) {
+  var el = document.getElementById('sf-' + id);
+  return el ? el.value : '';
+}
 
 function setNiveauGlobal(n) {
   Object.keys(NIVEAUX).forEach(function(k) { NIVEAUX[k] = n; });
@@ -653,9 +711,8 @@ function setNiveauGlobal(n) {
     var b = document.getElementById('gbtn-' + i);
     if (b) b.className = 'btn btn-sm ' + (i === n ? 'btn-p' : 'btn-s');
   });
-  var d = {1:'Email + log Sheet. Aucune modification.',2:'Email + log + actions sûres auto.',3:'Email + log + toutes actions auto.'};
-  var el = document.getElementById('ndesc-global');
-  if (el) el.textContent = d[n] || '';
+  var d = {1:'📧 Email + log. Aucune modification.', 2:'⚙️ Email + log + actions sûres auto.', 3:'🚀 Email + log + toutes actions auto.'};
+  document.getElementById('ndesc-global').textContent = d[n] || '';
   renderScriptPanel(CURR_SCRIPT);
 }
 
@@ -665,27 +722,14 @@ function setNiveauScript(type, n) {
     var b = document.getElementById('nb' + i + '-' + type);
     if (b) b.className = 'btn btn-sm ' + (i === n ? 'btn-p' : 'btn-s');
   });
-  var d = {1:'Email + log Sheet. Aucune modification.',2:'Email + log + actions auto sûres.',3:'Email + log + toutes les actions auto.'};
+  var d = {1:'📧 Email + log. Aucune modification.', 2:'⚙️ Email + log + actions sûres auto.', 3:'🚀 Email + log + toutes actions auto.'};
   var el = document.getElementById('ndesc-' + type);
   if (el) el.textContent = d[n] || '';
-  buildScript(type, 'sc-' + type);
+  genScript(type);
 }
 
-function gv(id) {
-  var el = document.getElementById('sf-' + id);
-  return el ? (el.value || '') : '';
-}
-
-function copyEl(id, btn) {
-  var el = document.getElementById(id);
-  if (!el || !el.textContent.trim()) { alert('Générer le script d\'abord.'); return; }
-  var orig = btn ? btn.textContent : '';
-  navigator.clipboard.writeText(el.textContent).then(function() {
-    if (btn) { btn.textContent = '✓ Copié!'; setTimeout(function() { btn.textContent = orig; }, 2000); }
-  }).catch(function() { alert('Copier manuellement avec Ctrl+A.'); });
-}
-
-function buildScript(type, codeId) {
+function genScript(type) {
+  var codeId = 'sc-' + type;
   var el = document.getElementById(codeId);
   if (!el) return;
   var n = NIVEAUX[type] || 1;
@@ -698,49 +742,200 @@ function buildScript(type, codeId) {
   el.textContent = code;
 }
 
+function copyCode(type) {
+  var el = document.getElementById('sc-' + type);
+  if (!el || !el.textContent.trim()) {
+    alert('Cliquer Générer d\'abord.');
+    return;
+  }
+  navigator.clipboard.writeText(el.textContent).then(function() {
+    var btn = document.getElementById('copy-btn-' + type);
+    if (btn) {
+      btn.textContent = '✓ Copié!';
+      setTimeout(function() { btn.textContent = '📋 Copier'; }, 2000);
+    }
+  }).catch(function() {
+    alert('Ctrl+A dans le bloc de code, puis Ctrl+C.');
+  });
+}
+
 function renderScriptPanel(type) {
   var CFG = {
-    budget:      {label:'Budget Monitor',      freq:'Toutes les heures', desc:'Surveille dépense vs budget. Email si seuil. Pause auto (Niv.2+).', fields:[{id:'sw',lbl:'Alerte à (% budget)',val:'85',t:'number'},{id:'sp',lbl:'Pause urgence (%)',val:'100',t:'number'},{id:'se',lbl:'Email',val:'tommy.dube@cossettemedia.com',t:'email'},{id:'ss',lbl:'Google Sheet ID',val:'',ph:'ID depuis URL du Sheet',t:'text'}]},
-    anomaly:     {label:'Anomaly Detector',    freq:'Quotidienne 7h00',  desc:'Compare J-1 vs 28j. CTR, CPA, Conv. Réduit budget si CPA explose (Niv.2+).', fields:[{id:'ac',lbl:'Seuil CTR (%)',val:'30',t:'number'},{id:'ap',lbl:'Seuil CPA (%)',val:'25',t:'number'},{id:'ae',lbl:'Email',val:'tommy.dube@cossettemedia.com',t:'email'},{id:'as2',lbl:'Google Sheet ID',val:'',ph:'ID du Sheet',t:'text'}]},
-    searchterms: {label:'Search Terms Miner',  freq:'Lundi 6h00',        desc:'Analyse search terms. Sheet + email. Ajoute négatifs auto (Niv.2). Exacts auto (Niv.3).', fields:[{id:'tc',lbl:'Coût sans conv. ($)',val:'50',t:'number'},{id:'td',lbl:'Fenêtre (jours)',val:'30',t:'number'},{id:'te',lbl:'Email',val:'tommy.dube@cossettemedia.com',t:'email'},{id:'ts',lbl:'Google Sheet ID',val:'',ph:'ID du Sheet',t:'text'}]},
-    quality:     {label:'Quality Score Tracker',freq:'Quotidienne 6h00', desc:'QS tous les MC. Alerte + log. Pause MC QS≤3 auto (Niv.2+).', fields:[{id:'qt',lbl:'Seuil QS (sur 10)',val:'5',t:'number'},{id:'qe',lbl:'Email',val:'tommy.dube@cossettemedia.com',t:'email'},{id:'qs2',lbl:'Google Sheet ID',val:'',ph:'ID du Sheet',t:'text'}]},
-    pmax:        {label:'PMax Monitor',        freq:'Mer. & Sam. 7h00',  desc:'ROAS réel vs cible. Ajuste tROAS ±10% auto (Niv.2). Scale budget (Niv.3).', fields:[{id:'pr',lbl:'ROAS cible (%)',val:'400',t:'number'},{id:'pt',lbl:'Tolérance ± (%)',val:'20',t:'number'},{id:'pe',lbl:'Email',val:'tommy.dube@cossettemedia.com',t:'email'},{id:'ps',lbl:'Google Sheet ID',val:'',ph:'ID du Sheet',t:'text'}]}
+    budget: {
+      label: 'Budget Monitor', freq: 'Toutes les heures',
+      desc: 'Surveille dépense vs budget. Email si seuil atteint. Pause auto (Niv.2+).',
+      fields: [
+        {id:'sw', lbl:'Alerte à (% budget)', val:'85',  t:'number'},
+        {id:'sp', lbl:'Pause urgence (%)',    val:'100', t:'number'},
+        {id:'se', lbl:'Email',                val:'tommy.dube@cossettemedia.com', t:'email'},
+        {id:'ss', lbl:'Google Sheet ID',      val:'',   t:'text',  ph:'Coller l\'ID depuis l\'URL du Sheet'}
+      ]
+    },
+    anomaly: {
+      label: 'Anomaly Detector', freq: 'Quotidienne 7h00',
+      desc: 'Compare J-1 vs 28j. CTR, CPA, Conv. Réduit budget si CPA explose (Niv.2+).',
+      fields: [
+        {id:'ac',  lbl:'Seuil CTR (%)', val:'30', t:'number'},
+        {id:'ap',  lbl:'Seuil CPA (%)', val:'25', t:'number'},
+        {id:'ae',  lbl:'Email',          val:'tommy.dube@cossettemedia.com', t:'email'},
+        {id:'as2', lbl:'Google Sheet ID',val:'',  t:'text', ph:'ID du Sheet'}
+      ]
+    },
+    searchterms: {
+      label: 'Search Terms Miner', freq: 'Lundi 6h00',
+      desc: 'Analyse search terms. Sheet + email. Négatifs auto (Niv.2). Exacts auto (Niv.3).',
+      fields: [
+        {id:'tc', lbl:'Coût sans conv. ($)', val:'50', t:'number'},
+        {id:'td', lbl:'Fenêtre (jours)',      val:'30', t:'number'},
+        {id:'te', lbl:'Email',                val:'tommy.dube@cossettemedia.com', t:'email'},
+        {id:'ts', lbl:'Google Sheet ID',      val:'',  t:'text', ph:'ID du Sheet'}
+      ]
+    },
+    quality: {
+      label: 'Quality Score Tracker', freq: 'Quotidienne 6h00',
+      desc: 'QS tous les MC. Alerte + log. Pause MC QS≤3 auto (Niv.2+).',
+      fields: [
+        {id:'qt',  lbl:'Seuil QS (sur 10)', val:'5', t:'number'},
+        {id:'qe',  lbl:'Email',              val:'tommy.dube@cossettemedia.com', t:'email'},
+        {id:'qs2', lbl:'Google Sheet ID',    val:'', t:'text', ph:'ID du Sheet'}
+      ]
+    },
+    pmax: {
+      label: 'PMax Monitor', freq: 'Mer. & Sam. 7h00',
+      desc: 'ROAS réel vs cible. Ajuste tROAS ±10% auto (Niv.2). Scale budget (Niv.3).',
+      fields: [
+        {id:'pr', lbl:'ROAS cible (%)',   val:'400', t:'number'},
+        {id:'pt', lbl:'Tolérance ± (%)', val:'20',  t:'number'},
+        {id:'pe', lbl:'Email',            val:'tommy.dube@cossettemedia.com', t:'email'},
+        {id:'ps', lbl:'Google Sheet ID', val:'',    t:'text', ph:'ID du Sheet'}
+      ]
+    }
   };
-  var cfg = CFG[type];
-  var niv = NIVEAUX[type] || 1;
-  var codeId = 'sc-' + type;
-  var nDesc = {1:'📧 Email + log Sheet. Aucune modification.',2:'⚙️ Email + log + actions auto sûres (≤10%).',3:'🚀 Email + log + toutes les actions auto.'};
-  var fhtml = cfg.fields.map(function(f) {
-    return '<div class="fg"><label>' + f.lbl + '</label><input type="' + f.t + '" class="fc" id="sf-' + f.id + '" value="' + f.val + '"' + (f.ph ? ' placeholder="' + f.ph + '"' : '') + '></div>';
-  }).join('');
-  var NLBLS = ['','Niv. 1 — Observe','Niv. 2 — Agit (sûr)','Niv. 3 — Agit tout'];
-  var nbhtml = [1,2,3].map(function(i) {
-    var cls = 'btn btn-sm ' + (i===niv?'btn-p':'btn-s');
-    return '<button class="' + cls + '" id="nb' + i + '-' + type + '" data-type="' + type + '" data-niv="' + i + '">' + NLBLS[i] + '</button>';
-  }).join(' ');
-  document.getElementById('scripts-content').innerHTML =
-    '<div class="card" style="margin-bottom:10px"><div class="card-body">' +
-    '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;margin-bottom:12px">' +
+
+  var cfg  = CFG[type];
+  var niv  = NIVEAUX[type] || 1;
+  var nDesc = {
+    1: '📧 Email + log Google Sheet. Aucune modification dans le compte.',
+    2: '⚙️ Email + log + actions auto sûres (négatifs, pauses, ajustements ≤10%).',
+    3: '🚀 Email + log + toutes les actions auto (enchères, budgets, MC).'
+  };
+  var nLbls = {1:'Niv. 1 — Observe', 2:'Niv. 2 — Agit (sûr)', 3:'Niv. 3 — Agit tout'};
+  var sc = document.getElementById('scripts-content');
+  sc.innerHTML = '';
+
+  // ── Card config ──────────────────────────────
+  var card1 = document.createElement('div');
+  card1.className = 'card';
+  card1.style.marginBottom = '10px';
+
+  var body1 = document.createElement('div');
+  body1.className = 'card-body';
+
+  // Meta info
+  var meta = document.createElement('div');
+  meta.style.cssText = 'display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;margin-bottom:12px';
+  meta.innerHTML =
     '<div><div class="kpi-l">Script</div><div style="font-size:12px;font-weight:600">' + cfg.label + '</div></div>' +
     '<div><div class="kpi-l">Fréquence</div><div style="font-size:12px;font-weight:600;color:var(--accent)">' + cfg.freq + '</div></div>' +
-    '<div style="grid-column:span 2"><div class="kpi-l">Description</div><div style="font-size:11px;color:var(--muted2)">' + cfg.desc + '</div></div>' +
-    '</div>' +
-    '<div style="background:var(--surf2);border:1px solid var(--bord);border-radius:4px;padding:10px;margin-bottom:12px">' +
-    '<div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Niveau pour ce script</div>' +
-    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:7px">' + nbhtml + '</div>' +
-    '<div style="font-size:11px;color:var(--muted2)" id="ndesc-' + type + '">' + nDesc[niv] + '</div>' +
-    '</div>' +
-    '<div class="form-grid">' + fhtml + '</div>' +
-    '<button class="btn btn-p btn-sm" data-action="build" data-type="' + type + '" data-code="' + codeId + '">⚙️ Générer le script</button>' +
-    '</div></div>' +
-    '<div class="card">' +
-    '<div class="card-hdr"><div class="card-title">JavaScript — Copier dans Google Ads → Tools → Scripts</div>' +
-    '<button class="btn btn-sm btn-s" data-action="copy" data-code="' + codeId + '">📋 Copier</button></div>' +
-    '<div class="card-body" style="padding:0"><div class="code-blk" id="' + codeId + '">Cliquer Générer ci-dessus.</div></div>' +
-    '</div>' +
-    '<div style="background:rgba(71,255,138,.06);border:1px solid rgba(71,255,138,.2);border-radius:4px;padding:9px;margin-top:8px;font-size:11px;color:var(--green)">' +
-    '✓ Emails reçus : compte · heure · métriques · actions effectuées (Niv.2+) · lien Google Sheet.</div>';
-  buildScript(type, codeId);
+    '<div style="grid-column:span 2"><div class="kpi-l">Description</div><div style="font-size:11px;color:var(--muted2)">' + cfg.desc + '</div></div>';
+  body1.appendChild(meta);
+
+  // Niveau selector
+  var nivBox = document.createElement('div');
+  nivBox.style.cssText = 'background:var(--surf2);border:1px solid var(--bord);border-radius:4px;padding:10px;margin-bottom:12px';
+
+  var nivLabel = document.createElement('div');
+  nivLabel.style.cssText = 'font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px';
+  nivLabel.textContent = 'Niveau pour ce script';
+  nivBox.appendChild(nivLabel);
+
+  var nivBtns = document.createElement('div');
+  nivBtns.style.cssText = 'display:flex;gap:6px;flex-wrap:wrap;margin-bottom:7px';
+  [1,2,3].forEach(function(i) {
+    var b = document.createElement('button');
+    b.id = 'nb' + i + '-' + type;
+    b.className = 'btn btn-sm ' + (i === niv ? 'btn-p' : 'btn-s');
+    b.textContent = nLbls[i];
+    b.addEventListener('click', function() { setNiveauScript(type, i); });
+    nivBtns.appendChild(b);
+  });
+  nivBox.appendChild(nivBtns);
+
+  var nivDescEl = document.createElement('div');
+  nivDescEl.id = 'ndesc-' + type;
+  nivDescEl.style.cssText = 'font-size:11px;color:var(--muted2)';
+  nivDescEl.textContent = nDesc[niv];
+  nivBox.appendChild(nivDescEl);
+  body1.appendChild(nivBox);
+
+  // Fields
+  var grid = document.createElement('div');
+  grid.className = 'form-grid';
+  cfg.fields.forEach(function(f) {
+    var wrap = document.createElement('div');
+    wrap.className = 'fg';
+    var lbl = document.createElement('label');
+    lbl.textContent = f.lbl;
+    var inp = document.createElement('input');
+    inp.type = f.t;
+    inp.className = 'fc';
+    inp.id = 'sf-' + f.id;
+    inp.value = f.val;
+    if (f.ph) inp.placeholder = f.ph;
+    wrap.appendChild(lbl);
+    wrap.appendChild(inp);
+    grid.appendChild(wrap);
+  });
+  body1.appendChild(grid);
+
+  // Generate button
+  var genBtn = document.createElement('button');
+  genBtn.className = 'btn btn-p btn-sm';
+  genBtn.textContent = '⚙️ Générer le script';
+  genBtn.addEventListener('click', function() { genScript(type); });
+  body1.appendChild(genBtn);
+
+  card1.appendChild(body1);
+  sc.appendChild(card1);
+
+  // ── Card code ────────────────────────────────
+  var card2 = document.createElement('div');
+  card2.className = 'card';
+
+  var hdr2 = document.createElement('div');
+  hdr2.className = 'card-hdr';
+
+  var hdrTitle = document.createElement('div');
+  hdrTitle.className = 'card-title';
+  hdrTitle.textContent = 'JavaScript — Copier dans Google Ads → Tools → Scripts';
+
+  var copyBtn = document.createElement('button');
+  copyBtn.id = 'copy-btn-' + type;
+  copyBtn.className = 'btn btn-sm btn-s';
+  copyBtn.textContent = '📋 Copier';
+  copyBtn.addEventListener('click', function() { copyCode(type); });
+
+  hdr2.appendChild(hdrTitle);
+  hdr2.appendChild(copyBtn);
+  card2.appendChild(hdr2);
+
+  var body2 = document.createElement('div');
+  body2.style.padding = '0';
+  var codeBlk = document.createElement('div');
+  codeBlk.id = 'sc-' + type;
+  codeBlk.className = 'code-blk';
+  codeBlk.textContent = 'Cliquer ⚙️ Générer ci-dessus.';
+  body2.appendChild(codeBlk);
+  card2.appendChild(body2);
+  sc.appendChild(card2);
+
+  // ── Info bar ─────────────────────────────────
+  var info = document.createElement('div');
+  info.style.cssText = 'background:rgba(71,255,138,.06);border:1px solid rgba(71,255,138,.2);border-radius:4px;padding:9px;margin-top:8px;font-size:11px;color:var(--green)';
+  info.textContent = '✓ Emails reçus : compte · heure · métriques · actions effectuées (Niv.2+) · lien Google Sheet.';
+  sc.appendChild(info);
+
+  genScript(type);
 }
 
 const SCRIPTS={
@@ -965,6 +1160,7 @@ function sendEmail(r,alertes,ajust){
   MailApp.sendEmail({to:CONFIG.EMAIL,subject:sub,body});
 }`;}
 };
+
 
 const ALERTS_DATA=[
   {sev:'🔴',camp:'sem-non-brand-vins | FR',metric:'Budget',val:'$250 (max)',seuil:'$400 requis',action:'Augmenter à $400 — Limited by budget 6 semaines'},
