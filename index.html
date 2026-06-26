@@ -984,7 +984,7 @@ function main(){
   const it=AdsApp.campaigns().withCondition('campaign.status = ENABLED').get();
   while(it.hasNext()){
     const c=it.next();
-    const base=c.getStatsFor('LAST_28_DAYS'),hier=c.getStatsFor('YESTERDAY');
+    const base=c.getStatsFor('LAST_30_DAYS'),hier=c.getStatsFor('YESTERDAY');
     if(hier.getImpressions()<100)continue;
     const bCtr=base.getCtr(),bCpa=base.getConversions()>0?base.getCost()/base.getConversions()/28:0;
     const bConv=base.getConversions()/28,hCtr=hier.getCtr();
